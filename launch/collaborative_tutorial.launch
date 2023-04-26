@@ -1,0 +1,9 @@
+<launch>
+  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"> 
+     <arg name="port" value="9091"/>
+  </include>
+   <node  name="expManager" pkg="collaborative_robot" type="expManager.py" output="screen" launch-prefix="gnome-terminal --command"/>
+ 
+</launch>
+
+ 

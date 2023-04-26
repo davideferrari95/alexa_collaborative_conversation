@@ -1,0 +1,1066 @@
+[
+    {
+        "id": "5906421b8866e394",
+        "type": "tab",
+        "label": "collaborative robot NodeREd",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "6ce05f54a2148961",
+        "type": "alexa-remote-init",
+        "z": "5906421b8866e394",
+        "name": "",
+        "account": "e68e29051f4fe11e",
+        "option": "initialise",
+        "x": 620,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c467a51cea1b68fd",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "take tool",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "textCommand",
+            "payload": {
+                "text": {
+                    "type": "str",
+                    "value": "alexa ask collaborative tutorial the tool is ready"
+                },
+                "devices": [
+                    "G091AA1220370VEG"
+                ]
+            }
+        },
+        "x": 620,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4c6bbd13a7c8f2e2",
+        "type": "ros-subscribe",
+        "z": "5906421b8866e394",
+        "server": "565dcdf129553fbf",
+        "topicname": "/Error",
+        "x": 110,
+        "y": 440,
+        "wires": [
+            [
+                "ca16a26734cbadaa",
+                "b8695e0cdfb57d80"
+            ]
+        ]
+    },
+    {
+        "id": "a19aac979b1a0fbe",
+        "type": "switch",
+        "z": "5906421b8866e394",
+        "name": "gestione errori",
+        "property": "payload.data",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "multiple object",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "object missing",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "object already taken",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "object not taken",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "mounting error",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "StopScrewError",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 6,
+        "x": 440,
+        "y": 440,
+        "wires": [
+            [
+                "91b1087d3925eed7"
+            ],
+            [
+                "292c471a2a6fda39"
+            ],
+            [
+                "1d7e06201c3aeff8"
+            ],
+            [
+                "a4f40167e0c02011"
+            ],
+            [
+                "675a2f9bfc871fa2"
+            ],
+            [
+                "b46ca9b1ff584271"
+            ]
+        ]
+    },
+    {
+        "id": "b59fb080192a4eeb",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "missing error",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "textCommand",
+            "payload": {
+                "text": {
+                    "type": "str",
+                    "value": "alexa ask collaborative tutorial what is missing error"
+                },
+                "devices": [
+                    "G091AA1220370VEG"
+                ]
+            }
+        },
+        "x": 950,
+        "y": 400,
+        "wires": [
+            [
+                "cf1915957c14f2ff"
+            ]
+        ]
+    },
+    {
+        "id": "4aa99c5a2b406a72",
+        "type": "debug",
+        "z": "5906421b8866e394",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "cf1915957c14f2ff",
+        "type": "debug",
+        "z": "5906421b8866e394",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "ce422ec9d1c8de62",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "already taken error",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "textCommand",
+            "payload": {
+                "text": {
+                    "type": "str",
+                    "value": "alexa ask collaborative tutorial what is already taken error"
+                },
+                "devices": [
+                    "G091AA1220370VEG"
+                ]
+            }
+        },
+        "x": 970,
+        "y": 440,
+        "wires": [
+            [
+                "272d66f2b1aaaf8a"
+            ]
+        ]
+    },
+    {
+        "id": "272d66f2b1aaaf8a",
+        "type": "debug",
+        "z": "5906421b8866e394",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "06d98224f52034ac",
+        "type": "ros-subscribe",
+        "z": "5906421b8866e394",
+        "server": "565dcdf129553fbf",
+        "topicname": "/pubResponse",
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "c467a51cea1b68fd"
+            ]
+        ],
+        "info": "roslaunch rosbridge_server rosbridge_websocket.launch port:=9091"
+    },
+    {
+        "id": "e7370e54f074c5bd",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "give me the tip",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "textCommand",
+            "payload": {
+                "text": {
+                    "type": "str",
+                    "value": "alexa ask collaborative tutorial give me the tip"
+                },
+                "devices": [
+                    "G091AA1220370VEG"
+                ]
+            }
+        },
+        "x": 620,
+        "y": 680,
+        "wires": [
+            [
+                "3555dc8ef912c2bd"
+            ]
+        ]
+    },
+    {
+        "id": "3555dc8ef912c2bd",
+        "type": "debug",
+        "z": "5906421b8866e394",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "ead3f34503a7bbce",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "object not taken error",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "textCommand",
+            "payload": {
+                "text": {
+                    "type": "str",
+                    "value": "alexa ask collaborative tutorial what is object not taken error"
+                },
+                "devices": [
+                    "G091AA1220370VEG"
+                ]
+            }
+        },
+        "x": 980,
+        "y": 480,
+        "wires": [
+            [
+                "8d729759755c4ea7"
+            ]
+        ]
+    },
+    {
+        "id": "8d729759755c4ea7",
+        "type": "debug",
+        "z": "5906421b8866e394",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "292c471a2a6fda39",
+        "type": "delay",
+        "z": "5906421b8866e394",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 800,
+        "y": 400,
+        "wires": [
+            [
+                "b59fb080192a4eeb"
+            ]
+        ]
+    },
+    {
+        "id": "1d7e06201c3aeff8",
+        "type": "delay",
+        "z": "5906421b8866e394",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 800,
+        "y": 440,
+        "wires": [
+            [
+                "ce422ec9d1c8de62"
+            ]
+        ]
+    },
+    {
+        "id": "a4f40167e0c02011",
+        "type": "delay",
+        "z": "5906421b8866e394",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 800,
+        "y": 480,
+        "wires": [
+            [
+                "ead3f34503a7bbce"
+            ]
+        ]
+    },
+    {
+        "id": "028bea8089fac6c9",
+        "type": "delay",
+        "z": "5906421b8866e394",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "10",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 440,
+        "y": 680,
+        "wires": [
+            [
+                "e7370e54f074c5bd"
+            ]
+        ]
+    },
+    {
+        "id": "ca16a26734cbadaa",
+        "type": "delay",
+        "z": "5906421b8866e394",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 260,
+        "y": 440,
+        "wires": [
+            [
+                "a19aac979b1a0fbe"
+            ]
+        ]
+    },
+    {
+        "id": "d77665596e0ab4bf",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "give me the screw",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "textCommand",
+            "payload": {
+                "text": {
+                    "type": "str",
+                    "value": "alexa ask collaborative tutorial give me the screw"
+                },
+                "devices": [
+                    "G091AA1220370VEG"
+                ]
+            }
+        },
+        "x": 630,
+        "y": 720,
+        "wires": [
+            [
+                "b530455de0872899"
+            ]
+        ]
+    },
+    {
+        "id": "b530455de0872899",
+        "type": "debug",
+        "z": "5906421b8866e394",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "d1ec9dab0102a59c",
+        "type": "delay",
+        "z": "5906421b8866e394",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "10",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 440,
+        "y": 720,
+        "wires": [
+            [
+                "d77665596e0ab4bf"
+            ]
+        ]
+    },
+    {
+        "id": "694adf5d5e99b850",
+        "type": "ros-subscribe",
+        "z": "5906421b8866e394",
+        "server": "d5573a5bee7c42db",
+        "topicname": "/events",
+        "x": 90,
+        "y": 760,
+        "wires": [
+            [
+                "b0b9604a1489728d"
+            ]
+        ]
+    },
+    {
+        "id": "b8695e0cdfb57d80",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "sound",
+            "payload": {
+                "sound": {
+                    "type": "str",
+                    "value": "buzzers_pistols_01"
+                },
+                "devices": [
+                    "G091AA1220370VEG"
+                ]
+            }
+        },
+        "x": 280,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b0b9604a1489728d",
+        "type": "switch",
+        "z": "5906421b8866e394",
+        "name": "gestione eventi",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "take tip",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "take screws",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "orientation advise",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "random advise",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "cross",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 5,
+        "x": 240,
+        "y": 760,
+        "wires": [
+            [
+                "028bea8089fac6c9"
+            ],
+            [
+                "d1ec9dab0102a59c"
+            ],
+            [
+                "45c995ede4998351"
+            ],
+            [
+                "c3e7f12343866cde"
+            ],
+            [
+                "95eed31024b64efd"
+            ]
+        ]
+    },
+    {
+        "id": "e1d1d0d0bae7d436",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "mounting error",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "textCommand",
+            "payload": {
+                "text": {
+                    "type": "str",
+                    "value": "alexa ask collaborative tutorial what is mounting error"
+                },
+                "devices": [
+                    "G091AA1220370VEG"
+                ]
+            }
+        },
+        "x": 960,
+        "y": 520,
+        "wires": [
+            [
+                "44c59b364f93dacb"
+            ]
+        ]
+    },
+    {
+        "id": "44c59b364f93dacb",
+        "type": "debug",
+        "z": "5906421b8866e394",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "675a2f9bfc871fa2",
+        "type": "delay",
+        "z": "5906421b8866e394",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 800,
+        "y": 520,
+        "wires": [
+            [
+                "e1d1d0d0bae7d436"
+            ]
+        ]
+    },
+    {
+        "id": "91b1087d3925eed7",
+        "type": "delay",
+        "z": "5906421b8866e394",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 800,
+        "y": 360,
+        "wires": [
+            [
+                "47199f8308ab9b30"
+            ]
+        ]
+    },
+    {
+        "id": "faf8b70561b56e1c",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "stop screw  error",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "textCommand",
+            "payload": {
+                "text": {
+                    "type": "str",
+                    "value": "alexa ask collaborative tutorial what is StopScrewError"
+                },
+                "devices": [
+                    "G091AA1220370VEG"
+                ]
+            }
+        },
+        "x": 960,
+        "y": 560,
+        "wires": [
+            [
+                "5dd19b82eda28ff1"
+            ]
+        ]
+    },
+    {
+        "id": "b46ca9b1ff584271",
+        "type": "delay",
+        "z": "5906421b8866e394",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 800,
+        "y": 560,
+        "wires": [
+            [
+                "faf8b70561b56e1c"
+            ]
+        ]
+    },
+    {
+        "id": "5dd19b82eda28ff1",
+        "type": "debug",
+        "z": "5906421b8866e394",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "47199f8308ab9b30",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "more specific",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "textCommand",
+            "payload": {
+                "text": {
+                    "type": "str",
+                    "value": "alexa ask collaborative tutorial what is more specific"
+                },
+                "devices": [
+                    "G091AA1220370VEG"
+                ]
+            }
+        },
+        "x": 950,
+        "y": 360,
+        "wires": [
+            [
+                "4aa99c5a2b406a72"
+            ]
+        ]
+    },
+    {
+        "id": "ffdd55da68e0e3ac",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "OrientationAdvise",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "textCommand",
+            "payload": {
+                "text": {
+                    "type": "str",
+                    "value": "alexa ask collaborative tutorial OrientationAdvise"
+                },
+                "devices": [
+                    "G091AA1220370VEG"
+                ]
+            }
+        },
+        "x": 630,
+        "y": 760,
+        "wires": [
+            [
+                "ba183b78da934c81"
+            ]
+        ]
+    },
+    {
+        "id": "985226a51093d443",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "random advise",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "textCommand",
+            "payload": {
+                "text": {
+                    "type": "str",
+                    "value": "alexa ask collaborative tutorial what is random advise"
+                },
+                "devices": [
+                    "G091AA1220370VEG"
+                ]
+            }
+        },
+        "x": 620,
+        "y": 800,
+        "wires": [
+            [
+                "e0cfb11ccae9479e"
+            ]
+        ]
+    },
+    {
+        "id": "ba183b78da934c81",
+        "type": "debug",
+        "z": "5906421b8866e394",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "e0cfb11ccae9479e",
+        "type": "debug",
+        "z": "5906421b8866e394",
+        "name": "debug 11",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "45c995ede4998351",
+        "type": "delay",
+        "z": "5906421b8866e394",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "10",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 440,
+        "y": 760,
+        "wires": [
+            [
+                "ffdd55da68e0e3ac"
+            ]
+        ]
+    },
+    {
+        "id": "c3e7f12343866cde",
+        "type": "delay",
+        "z": "5906421b8866e394",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "10",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 440,
+        "y": 800,
+        "wires": [
+            [
+                "985226a51093d443"
+            ]
+        ]
+    },
+    {
+        "id": "480d039bc9e32d4d",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "give me the cross tip",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "textCommand",
+            "payload": {
+                "text": {
+                    "type": "str",
+                    "value": "alexa ask collaborative tutorial give me the cross tip"
+                },
+                "devices": [
+                    "G091AA1220370VEG"
+                ]
+            }
+        },
+        "x": 640,
+        "y": 840,
+        "wires": [
+            [
+                "133fb362cb53a65f"
+            ]
+        ]
+    },
+    {
+        "id": "133fb362cb53a65f",
+        "type": "debug",
+        "z": "5906421b8866e394",
+        "name": "debug 12",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "95eed31024b64efd",
+        "type": "delay",
+        "z": "5906421b8866e394",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "10",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 440,
+        "y": 840,
+        "wires": [
+            [
+                "480d039bc9e32d4d"
+            ]
+        ]
+    },
+    {
+        "id": "7c0822f7b34c07d1",
+        "type": "ros-subscribe",
+        "z": "5906421b8866e394",
+        "server": "d5573a5bee7c42db",
+        "topicname": "/tts",
+        "x": 830,
+        "y": 300,
+        "wires": [
+            [
+                "f79c490fed19d78f"
+            ]
+        ]
+    },
+    {
+        "id": "f79c490fed19d78f",
+        "type": "alexa-remote-routine",
+        "z": "5906421b8866e394",
+        "name": "",
+        "account": "e68e29051f4fe11e",
+        "routineNode": {
+            "type": "speak",
+            "payload": {
+                "type": "regular",
+                "text": {
+                    "type": "msg",
+                    "value": "payload.data"
+                },
+                "devices": [
+                    ""
+                ]
+            }
+        },
+        "x": 1040,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e68e29051f4fe11e",
+        "type": "alexa-remote-account",
+        "name": "NodeRED ros",
+        "authMethod": "proxy",
+        "proxyOwnIp": "192.168.247.252",
+        "proxyPort": "3456",
+        "cookieFile": "AuthFile",
+        "refreshInterval": "3",
+        "alexaServiceHost": "alexa.amazon.it",
+        "amazonPage": "amazon.it",
+        "acceptLanguage": "it-IT",
+        "onKeywordInLanguage": "",
+        "userAgent": "",
+        "useWsMqtt": "on",
+        "autoInit": "on"
+    },
+    {
+        "id": "565dcdf129553fbf",
+        "type": "ros-server",
+        "url": "ws://localhost:9091/"
+    },
+    {
+        "id": "d5573a5bee7c42db",
+        "type": "ros-server",
+        "url": "ws://localhost:9091/"
+    }
+]
