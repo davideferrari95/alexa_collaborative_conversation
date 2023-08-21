@@ -92,14 +92,14 @@ Package that allows communication between ROS and Alexa, implementing two differ
     sudo apt install snapd
     sudo snap install ngrok
 
-### Configuration NodeRED contrib ROS
+### Configuration node-red-contrib-ros
 
 - in sub/pub node → ROS SERVER → add new ROS server:
 
         url: ws://localhost:9091/
         Topic: name_topic
 
-### Configuration NodeRED contrib Alexa Remote 2
+### Configuration node-red-contrib-alexa-remote2-applestrudel
 
 - Alexa initialize node → Account → Add new Alexa Account:
 
