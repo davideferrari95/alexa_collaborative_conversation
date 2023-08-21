@@ -51,7 +51,7 @@ include_directories(
 
 install(
   PROGRAMS
-    script/launch.py
+    script/Skill/skill_backend_launcher.py
     script/TTS/node_red.py
   DESTINATION
   	${CATKIN_PACKAGE_PYTHON_DESTINATION}
