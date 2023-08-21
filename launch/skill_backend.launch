@@ -6,6 +6,6 @@
    </include>
 
    <!-- Launch Experiment Manager -->
-   <node  name="expManager" pkg="collaborative_robot" type="expManager.py" output="screen" launch-prefix="gnome-terminal --command"/>
+   <node pkg="alexa_conversation" type="skill_backend_launcher.py" name="skill_backend_launcher" output="screen"/>
 
 </launch>
