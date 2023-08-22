@@ -1,0 +1,9 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+  "FUNCTIONS_WORKER_RUNTIME": "python",
+  "AzureWebJobsStorage": "",
+  "AlexaSkillID": "amzn1.ask.skill.a40ec135-445f-48b2-8f36-2830743f215c",
+  "UpdatesURL": "https://azure.microsoft.com/updates/feed/"
+  }
+}
