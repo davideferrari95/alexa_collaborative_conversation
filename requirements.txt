@@ -1,0 +1,14 @@
+# Microsoft Azure
+azure-functions
+
+# Ask-SDK
+ask-sdk-core
+ask-sdk-webservice-support
+
+# ROS
+rospy
+rospkg
+
+# Python
+pyOpenSSL
+PyYAML
