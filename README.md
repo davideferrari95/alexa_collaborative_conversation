@@ -8,7 +8,7 @@ Package that allows communication between ROS and Alexa, implementing two differ
 ## Requirements
 
 - Ubuntu 20.04+
-- Python 3.8+
+- Python 3.10+
 - ROS Noetic+
 - ROS-Bridge
 - Azure 4.0+
@@ -17,6 +17,26 @@ Package that allows communication between ROS and Alexa, implementing two differ
 - ask-sdk
 
 ## Installation
+
+### Prerequisites
+
+- Install ROS Noetic: [Ubuntu Guide](http://wiki.ros.org/noetic/Installation/Ubuntu)
+
+        sudo apt install ros-noetic-desktop-full
+
+- Install `rosbridge` suite:
+
+        sudo apt-get install ros-noetic-rosbridge-server
+
+- Install `miniconda`: [Official Guide](https://docs.conda.io/en/main/miniconda.html)
+
+- Create a `conda` environment with `openssl=3.0.9`:
+
+        conda create --name alexa_env python=3.10 openssl=3.0.9
+
+- Install dependencies in `requirements.txt`:
+
+        pip install -r requirements.txt
 
 ### Microsoft Azure
 
@@ -49,6 +69,14 @@ Package that allows communication between ROS and Alexa, implementing two differ
         sudo apt-get update
         sudo apt-get install azure-functions-core-tools-4
 
+### ask-sdk-core e webservice
+
+- install ask-sdk-core e webservice:
+
+        npm install --save ask-sdk
+        pip install ask-sdk-webservice-support
+        pip install ask-sdk-core
+
 ### Node RED
 
 - To install Node-RED you can use the `npm` command that comes with node.js:
@@ -71,35 +99,22 @@ Package that allows communication between ROS and Alexa, implementing two differ
         npm install node-red-contrib-ros
         npm install node-red-contrib-alexa-remote2-applestrudel
 
-### Ros Bridge
-
-- install `rosbridge` suite:
-
-        sudo apt-get install ros-noetic-rosbridge-server
-
-### ask-sdk-core e webservice
-
-- install ask-sdk-core e webservice:
-
-        npm install --save ask-sdk
-        pip install ask-sdk-webservice-support
-        pip install ask-sdk-core
-
-
 ### Ngrok
 
     sudo apt update
     sudo apt install snapd
     sudo snap install ngrok
 
-### Configuration node-red-contrib-ros
+## Configuration
+
+### node-red-contrib-ros
 
 - in sub/pub node → ROS SERVER → add new ROS server:
 
         url: ws://localhost:9091/
         Topic: name_topic
 
-### Configuration node-red-contrib-alexa-remote2-applestrudel
+### node-red-contrib-alexa-remote2-applestrudel
 
 - Alexa initialize node → Account → Add new Alexa Account:
 
@@ -125,9 +140,9 @@ Package that allows communication between ROS and Alexa, implementing two differ
 
 - Option → initialize
 
-### Azure Configuration
+### Azure
 
-- Move to project dir from a command prompt and run the following command to create the project and local Git repository:
+- Move to project dir from a command prompt `cd...` and run the following command to create the project and local Git repository:
 
         func init MyFunctionProj
         func new --template "Http Trigger" --name MyHttpTrigger
@@ -143,17 +158,6 @@ Package that allows communication between ROS and Alexa, implementing two differ
             "UpdatesURL": "https://azure.microsoft.com/updates/feed/"
             }
         }
-
-- Edit `requirements.txt`:
-
-        azure-functions
-        beautifulsoup4
-        requests
-        service_identity
-        ask-sdk-core
-        ask-sdk-webservice-support
-        rospkg
-        rospy
 
 - Run functions locally:
 
