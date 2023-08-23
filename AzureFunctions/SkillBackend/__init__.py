@@ -192,8 +192,7 @@ class LoggingRequestInterceptor(AbstractRequestInterceptor):
     def process(self, handler_input):
 
         # type: (HandlerInput) -> None
-        # logger.info("Request Envelope: {}".format(handler_input.request_envelope))
-        pass
+        logging.info("Request Envelope: {}".format(handler_input.request_envelope))
 
 class LoggingResponseInterceptor(AbstractResponseInterceptor):
 
@@ -202,9 +201,7 @@ class LoggingResponseInterceptor(AbstractResponseInterceptor):
     def process(self, handler_input, response):
 
         # type: (HandlerInput, Response) -> None
-        # logger.info("Response: {}".format(response))
-        pass
-
+        logging.info("Response: {}".format(response))
 
 
 class testIntentHandler(AbstractRequestHandler):
@@ -228,7 +225,6 @@ class testIntentHandler(AbstractRequestHandler):
                 .ask("add a reprompt if you want to keep the session open for the user to respond")
                 .response
         )
-
 
 class HelloWorldIntentHandler(AbstractRequestHandler):
 
@@ -268,7 +264,7 @@ class BeginExperiment_IntentHandler(AbstractRequestHandler):
         #     my_attribute = session_attributes['my_attribute']
         # else: my_attribute = None
         
-        logger.debug('BeginExperiment Intent Handler')
+        logging.debug('BeginExperiment Intent Handler')
         
         response = {
             "apiResponse": {
