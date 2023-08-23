@@ -142,26 +142,23 @@ Package that allows communication between ROS and Alexa, implementing two differ
 
 ### Azure
 
-- Move to project dir from a command prompt `cd...` and run the following command to create the project and local Git repository:
+- To create a New Project and a Skill Template run the following commands:
 
         func init MyFunctionProj
-        func new --template "Http Trigger" --name MyHttpTrigger
+        cd MyFunctionProj
+        func new --template "Http Trigger" --name MySkill
 
-- Edit `local.settings.json`:
+- Edit `local.settings.json` by adding your `AlexaSkillID`:
 
         {
             "IsEncrypted": false,
             "Values": {
             "FUNCTIONS_WORKER_RUNTIME": "python",
             "AzureWebJobsStorage": "",
-            "AlexaSkillID": "amzn1.ask.skill.96421c1e-fb2b-44eb-80a3-f9097c146ffd", #ID skill alexa
+            "AlexaSkillID": "amzn1.ask.skill.96421c1e-fb2b-44eb-80a3-f9097c146ffd",
             "UpdatesURL": "https://azure.microsoft.com/updates/feed/"
             }
         }
-
-- Run functions locally:
-
-        func start
 
 - Azure extension for VSCode:
 
@@ -169,8 +166,17 @@ Package that allows communication between ROS and Alexa, implementing two differ
 
       ext install ms-azuretools.vscode-azurefunctions
 
-## Configure Alexa Skill End-Point
+## Running
 
-- change skill endpoint:
+- Launch `skill_backend_launcher`:
 
-        https://2c13-151-38-117-194.eu.ngrok.io/api/HttpTriggerAlexaROS
+        roslaunch alexa_conversation skill_backend.launch
+
+- Run Azure Functions locally:
+
+        cd ../AzureFunction
+        func start
+
+- Change Skill Endpoint in Developer Console with the one given by `ngrok` adding `/api/"SkillName"` at the end:
+
+        https://2c13-151-38-117-194.eu.ngrok.io/api/SkillBackend
