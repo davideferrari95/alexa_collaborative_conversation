@@ -14,10 +14,10 @@ threading.Thread(target=lambda: rospy.init_node('skill_launcher', disable_signal
 
 # Launch Node-RED and ngrok in a Separate Thread Terminal
 NODE_RED = subprocess.Popen('gnome-terminal -- "node-red"', shell=True)
-NGROK    = subprocess.Popen('gnome-terminal -e "./ngrok http 5000"', cwd=f'{NGROK_PATH}', shell=True)
+NGROK    = subprocess.Popen('gnome-terminal -e "./ngrok http 7071"', cwd=f'{NGROK_PATH}', shell=True)
 
 # Launch Azure Functions
-AZURE = subprocess.Popen('func start -p 5050', cwd=f'{path}/AzureFunctions/', shell=True)
+# AZURE = subprocess.Popen('func start', cwd=f'{path}/AzureFunctions/', shell=True)
 
 def handle_signal(sig, frame):
 
@@ -29,7 +29,7 @@ def handle_signal(sig, frame):
     os.system('killall ngrok')
 
     # Kill Azure Functions
-    AZURE.wait()
+    # AZURE.wait()
 
     print("\nDone\n")
     exit(0)
