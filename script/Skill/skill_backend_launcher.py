@@ -2,6 +2,9 @@
 import subprocess, os, threading, signal
 import rospy, rospkg
 
+# Import Utilities
+from utils import delete_pycache_folders
+
 # Open ROS Skill Server in a Separate Thread
 threading.Thread(target=lambda: rospy.init_node('skill_launcher', disable_signals=True)).start()
 
@@ -34,7 +37,10 @@ def handle_signal(sig, frame):
     # Wait for Azure Functions
     if launch_azure:    AZURE.wait()
 
-    print("\nDone\n")
+    # Delete `__pycache__` Folders
+    delete_pycache_folders(verbose=True)
+
+    print("\nDone\n\n")
     exit(0)
 
 # Register Signal Handler
