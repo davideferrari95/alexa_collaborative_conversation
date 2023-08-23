@@ -7,7 +7,7 @@ rospack = rospkg.RosPack()
 path = rospack.get_path('alexa_conversation')
 
 # Set Path to ngrok
-NGROK_PATH = '/home/davide/Documenti/Programmi/ngrok'
+NGROK_PATH = '/home/davide/Documenti/Programmi/ngrok/'
 
 # Launch Commands
 commands = [
@@ -20,33 +20,26 @@ threading.Thread(target=lambda: rospy.init_node('skill_launcher', disable_signal
 
 # Launch Node-RED and ngrok in a Separate Thread Terminal
 processes = [subprocess.Popen(cmd, shell=True) for cmd in commands]
-# processes = [subprocess.Popen(cmd, shell=True, cwd=f'{NGROK_PATH}') for cmd in commands]
+NODE_RED_ID, NGROK_ID = processes[0].pid, processes[1].pid
+print(f'Node-RED PID: {NODE_RED_ID}')
+print(f'ngrok PID: {NGROK_ID}')
 
-# threading.Thread(target=lambda: subprocess.Popen(['gnome-terminal -- "node-red"'], shell=True)).start()
-NODE_RED_ID = processes[0].pid
-NGROK_ID = processes[1].pid
-print(f"Node-RED PID: {NODE_RED_ID}")
+# Launch Azure Functions
+AZURE = subprocess.Popen('func start -p 5050', cwd=f'{path}/AzureFunctions/', shell=True)
 
-# Launch ngrok in a Separate Thread Terminal
-# NGROK = threading.Thread(target=lambda: subprocess.Popen(['gnome-terminal -e "./ngrok http 5000"'], preexec_fn=os.setsid, cwd=f'{NGROK_PATH}', shell=True)).start()
-# NGROK_ID = os.getpid()
-print(f"ngrok PID: {NGROK_ID}")
-
-# AZURE = subprocess.Popen('func start -p 7075', shell=True, cwd=f'{path}/AzureFunctions/')
-# AZURE = subprocess.Popen('func start', shell=True, cwd=f'{path}/AzureFunctions/')
-
-def handle_signal(signal, frame):
+def handle_signal(sig, frame):
 
     # SIGINT (Ctrl+C)
     print("\nProgram Interrupted. Killing Opened Terminal...\n")
 
-    # Kill Node-RED
-    # os.kill(NODE_RED.pid, signal.SIGKILL)
+    # Kill Node-RED and ngrok
+    processes[0].wait()
+    processes[1].wait()
+    # os.kill(NODE_RED_ID, signal.SIGINT)
+    # os.kill(NGROK_ID,    signal.SIGINT)
 
-    # Kill ngrok
-    
     # Kill Azure Functions
-    # AZURE.wait()
+    AZURE.wait()
 
     print("Done\n")
     exit(0)
