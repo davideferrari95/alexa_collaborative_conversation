@@ -10,5 +10,11 @@ rospy
 rospkg
 
 # Python
+autobahn
+Pillow
+pymongo
 pyOpenSSL
 PyYAML
+service_identity
+tornado
+Twisted
