@@ -1,0 +1,124 @@
+[
+    {
+        "id": "43552bcb0b2fa19d",
+        "type": "tab",
+        "label": "Alexa Tecnopolo - TTS",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b28db6ce6e21dd19",
+        "type": "ros-subscribe",
+        "z": "43552bcb0b2fa19d",
+        "server": "d5573a5bee7c42db",
+        "topicname": "/tts",
+        "x": 390,
+        "y": 300,
+        "wires": [
+            [
+                "a1cb9fd96bcafb5e",
+                "f7075dc4d9e20498"
+            ]
+        ]
+    },
+    {
+        "id": "a1cb9fd96bcafb5e",
+        "type": "alexa-remote-routine",
+        "z": "43552bcb0b2fa19d",
+        "name": "",
+        "account": "ac7b59c675058ce4",
+        "routineNode": {
+            "type": "speak",
+            "payload": {
+                "type": "regular",
+                "text": {
+                    "type": "msg",
+                    "value": "payload.data"
+                },
+                "devices": [
+                    "G090XG0900860BED"
+                ]
+            }
+        },
+        "x": 780,
+        "y": 300,
+        "wires": [
+            [
+                "c372d38085e7de10"
+            ]
+        ],
+        "inputLabels": [
+            "/tts"
+        ]
+    },
+    {
+        "id": "c372d38085e7de10",
+        "type": "debug",
+        "z": "43552bcb0b2fa19d",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "70e5fc7192699384",
+        "type": "alexa-remote-init",
+        "z": "43552bcb0b2fa19d",
+        "name": "",
+        "account": "ac7b59c675058ce4",
+        "option": "initialise",
+        "x": 660,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f7075dc4d9e20498",
+        "type": "debug",
+        "z": "43552bcb0b2fa19d",
+        "name": "debug 14",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "d5573a5bee7c42db",
+        "type": "ros-server",
+        "url": "ws://localhost:9091/"
+    },
+    {
+        "id": "ac7b59c675058ce4",
+        "type": "alexa-remote-account",
+        "name": "Alexa-Davide",
+        "authMethod": "proxy",
+        "proxyOwnIp": "192.168.1.8",
+        "proxyPort": "3456",
+        "cookieFile": "AuthFile",
+        "refreshInterval": "5",
+        "alexaServiceHost": "alexa.amazon.it",
+        "amazonPage": "amazon.it",
+        "acceptLanguage": "it-IT",
+        "onKeywordInLanguage": "on",
+        "userAgent": "",
+        "useWsMqtt": "on",
+        "autoInit": "on"
+    }
+]

@@ -1,0 +1,20 @@
+<launch>
+
+    <!-- Launch Arguments -->
+    <arg name="azure"    default="true"/>
+    <arg name="ngrok"    default="true"/>
+    <arg name="node_red" default="true"/>
+
+    <!-- Launch Ros-Bridge Websocket -->
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"> 
+        <arg name="port" value="9091"/>
+    </include>
+
+    <!-- Launch Experiment Manager -->
+    <node pkg="alexa_conversation" type="skill_backend_launcher.py" name="skill_backend_launcher" output="screen">
+        <param name="launch_azure"    value="$(arg azure)" />
+        <param name="launch_ngrok"    value="$(arg ngrok)" />
+        <param name="launch_node_red" value="$(arg node_red)" />
+    </node>
+
+</launch>

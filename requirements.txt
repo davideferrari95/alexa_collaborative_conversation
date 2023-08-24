@@ -1,0 +1,20 @@
+# Microsoft Azure
+azure-functions
+
+# Ask-SDK
+ask-sdk-core
+ask-sdk-webservice-support
+
+# ROS
+rospy
+rospkg
+
+# Python
+autobahn
+Pillow
+pymongo
+pyOpenSSL
+PyYAML
+service_identity
+tornado
+Twisted

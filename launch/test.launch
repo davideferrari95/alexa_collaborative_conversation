@@ -1,7 +1,0 @@
-<launch>
- 
-   <node  name="test" pkg="collaborative_robot" type="test.py" output="screen" />
- 
-</launch>
-
- 
