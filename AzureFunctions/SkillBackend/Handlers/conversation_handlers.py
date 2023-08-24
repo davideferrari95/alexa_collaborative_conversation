@@ -147,7 +147,7 @@ class WaitForTime_API_Handler(AbstractRequestHandler):
         time_unit = 'seconds' if not 'time_unit' in args.keys() else args['time_unit']
 
         # Publish ROS Message
-        send_command(WAIT_TIME, f'{time} {time_unit}')
+        send_command(WAIT_TIME, wait_time=f'{time} {time_unit}')
 
         return {
             "apiResponse": {},
