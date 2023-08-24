@@ -1,5 +1,6 @@
 # Some Useful Links
 
+https://blog.siliconvalve.com/posts/2021/08/31/how-to-build-and-debug-an-alexa-skill-with-python-and-azure-functions
 https://github.com/alexa-samples/skill-sample-python-intro-to-alexa-conversations
 https://github.com/alexa-samples/skill-sample-python-alexa-conversations-pet-match
 https://blog.devandreacarratta.it/alexa-skill-endpoint-azure-function/
@@ -8,6 +9,7 @@ https://developer.amazon.com/en-US/docs/alexa/conversations/steps-to-create-skil
 
 ## Video Tutorial
 
+https://www.youtube.com/watch?v=la1zF2aQVtA
 https://www.youtube.com/watch?v=-UVulz5vCUc&ab_channel=AlexaDevelopers
 
 ## Skill Export
