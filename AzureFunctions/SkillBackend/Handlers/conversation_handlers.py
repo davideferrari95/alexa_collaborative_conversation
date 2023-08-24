@@ -9,6 +9,9 @@ from Utils.utils import is_api_request, get_api_arguments
 from Utils.ros   import send_command
 from Utils.command_list import *
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
 class BeginExperiment_API_Handler(AbstractRequestHandler):
 
     def can_handle(self, handler_input: HandlerInput):
@@ -17,7 +20,7 @@ class BeginExperiment_API_Handler(AbstractRequestHandler):
 
     def handle(self, handler_input: HandlerInput):
 
-        logging.debug('BeginExperiment_API Handler')
+        logger.debug('BeginExperiment_API Handler')
 
         # Publish ROS Message
         send_command(EXPERIMENT_START)
@@ -35,7 +38,7 @@ class ObstacleDetected_ObjectMoved_API_Handler(AbstractRequestHandler):
 
     def handle(self, handler_input: HandlerInput):
 
-        logging.debug('ObstacleDetected_ObjectMoved_API Handler')
+        logger.debug('ObstacleDetected_ObjectMoved_API Handler')
 
         # Publish ROS Message
         send_command(MOVED_OBJECT)
@@ -53,7 +56,7 @@ class PutObjectHere_API_Handler(AbstractRequestHandler):
 
     def handle(self, handler_input: HandlerInput):
 
-        logging.debug('PutObjectHere_API Handler')
+        logger.debug('PutObjectHere_API Handler')
 
         # Get API Arguments
         args = get_api_arguments(handler_input)
@@ -72,7 +75,6 @@ class PutObjectHere_API_Handler(AbstractRequestHandler):
             "shouldEndSession": True
         }
 
-
 class ResumeMoving_API_Handler(AbstractRequestHandler):
 
     def can_handle(self, handler_input: HandlerInput):
@@ -81,7 +83,7 @@ class ResumeMoving_API_Handler(AbstractRequestHandler):
 
     def handle(self, handler_input: HandlerInput):
 
-        logging.debug('ResumeMoving_API Handler')
+        logger.debug('ResumeMoving_API Handler')
 
         # Publish ROS Message
         send_command(CAN_GO)
@@ -99,10 +101,71 @@ class WaitForCommand_API_Handler(AbstractRequestHandler):
 
     def handle(self, handler_input: HandlerInput):
 
-        logging.debug('WaitForCommand_API Handler')
+        logger.debug('WaitForCommand_API Handler')
 
         # Publish ROS Message
-        send_command(WAIT)
+        send_command(WAIT_FOR_COMMAND)
+
+        return {
+            "apiResponse": {},
+            "shouldEndSession": True
+        }
+
+class MoveToUser_UserMovedBack_API_Handler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'MoveToUser_UserMovedBack_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        logger.debug('MoveToUser_UserMovedBack_API Handler')
+
+        # Publish ROS Message
+        send_command(USER_MOVED)
+
+        return {
+            "apiResponse": {},
+            "shouldEndSession": True
+        }
+
+class WaitForTime_API_Handler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'WaitForTime_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        logger.debug('WaitForTime_API Handler')
+
+        # Get API Arguments
+        args = get_api_arguments(handler_input)
+
+        # Check for `time` and `time_unit` Arguments
+        time = 0 if not 'time' in args.keys() else args['time']
+        time_unit = 'seconds' if not 'time_unit' in args.keys() else args['time_unit']
+
+        # Publish ROS Message
+        send_command(WAIT_TIME, f'{time} {time_unit}')
+
+        return {
+            "apiResponse": {},
+            "shouldEndSession": True
+        }
+
+class Wait_API_Handler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'Wait_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        logger.debug('Wait_API Handler')
+
+        # Publish ROS Message
+        send_command(WAIT_FOR_COMMAND)
 
         return {
             "apiResponse": {},

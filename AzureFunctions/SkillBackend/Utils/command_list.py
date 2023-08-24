@@ -6,8 +6,9 @@ PUT_OBJECT_IN_AREA_GESTURE  = 4
 USER_MOVED                  = 5
 USER_CANT_MOVE              = 6
 REPLAN_TRAJECTORY           = 7
-WAIT                        = 8
+WAIT_FOR_COMMAND            = 8
 CAN_GO                      = 9
+WAIT_TIME                   = 10
 
 command_info = [
     'EXPERIMENT_START',
@@ -18,8 +19,9 @@ command_info = [
     'USER_MOVED',
     'USER_CANT_MOVE',
     'REPLAN_TRAJECTORY',
-    'WAIT',
-    'CAN_GO'
+    'WAIT_FOR_COMMAND',
+    'CAN_GO',
+    'WAIT_TIME'
 ]
 
 available_areas = [

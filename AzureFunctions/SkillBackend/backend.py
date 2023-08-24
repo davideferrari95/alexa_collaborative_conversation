@@ -54,6 +54,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     skill_builder.add_request_handler(PutObjectHere_API_Handler())
     skill_builder.add_request_handler(ResumeMoving_API_Handler())
     skill_builder.add_request_handler(WaitForCommand_API_Handler())
+    skill_builder.add_request_handler(MoveToUser_UserMovedBack_API_Handler())
+    skill_builder.add_request_handler(WaitForTime_API_Handler())
+    skill_builder.add_request_handler(Wait_API_Handler())
 
     # Register Interceptors
     skill_builder.add_global_request_interceptor(LoggingRequestInterceptor())
