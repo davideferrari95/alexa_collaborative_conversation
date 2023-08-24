@@ -1,10 +1,22 @@
 #!/usr/bin/env python3
-import rospy
-from std_msgs.msg import String, Int32
+import rospy, time
+
+# Import Messages
+from alexa_conversation.msg import VoiceCommand
+from Utils.command_list import command_info, available_areas
 
 # Open ROS Skill Server
 rospy.init_node('skill_server', disable_signals=True)
+time.sleep(1)
 
 # ROS Publishers
-intent_publisher = rospy.Publisher('intent', Int32, queue_size=1)
-intent_info_publisher = rospy.Publisher('intent_info', String, queue_size=1)
+command_pub = rospy.Publisher('voice_command', VoiceCommand, queue_size=1)
+
+def send_command(command, area=None):
+
+    # Voice Command Message
+    msg = VoiceCommand()
+    msg.command = command
+    msg.info = command_info[command]
+    msg.area = area if area in available_areas else ''
+    command_pub.publish(msg)

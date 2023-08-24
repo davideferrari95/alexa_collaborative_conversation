@@ -3,52 +3,108 @@ import logging
 # Import Ask SDK
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.handler_input import HandlerInput
-from ask_sdk_model.response import Response
-from ask_sdk_core.utils import is_request_type, is_intent_name, get_intent_name
 
 # Import Utilities
 from Utils.utils import is_api_request, get_api_arguments
-from Utils.ros   import intent_publisher, intent_info_publisher
+from Utils.ros   import send_command
+from Utils.command_list import *
 
-# Import Messages
-from std_msgs.msg import String, Int32
+class BeginExperiment_API_Handler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'BeginExperiment_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        logging.debug('BeginExperiment_API Handler')
+
+        # Publish ROS Message
+        send_command(EXPERIMENT_START)
+
+        return {
+            "apiResponse": {},
+            "shouldEndSession": True
+        }
 
 class ObstacleDetected_ObjectMoved_API_Handler(AbstractRequestHandler):
 
     def can_handle(self, handler_input: HandlerInput):
 
-        logging.debug('ObstacleDetected_ObjectMoved_API Intent Handler')
         return is_api_request(handler_input, 'ObstacleDetected_ObjectMoved_API')
 
     def handle(self, handler_input: HandlerInput):
 
-        # args=get_api_arguments(handler_input)
-
         logging.debug('ObstacleDetected_ObjectMoved_API Handler')
 
-        msg = String()
-        msg.data = 'ObstacleDetected_ObjectMoved'
-        intent_info_publisher.publish(msg)
-        
-        msg = Int32()
-        msg.data = 1
-        intent_publisher.publish(msg)
+        # Publish ROS Message
+        send_command(MOVED_OBJECT)
 
-        # type: (HandlerInput) -> Response
-        speak_output = "Handler"
-        
-
-        # return (
-        #     handler_input.response_builder
-        #         .speak(speak_output)
-        #         # .ask("add a reprompt if you want to keep the session open for the user to respond")
-        #         .response
-        # )
-
-        # session_attributes = handler_input.attributes_manager.session_attributes
-        # session_attributes['selectedOrientation'] = orientation
-        response={
+        return {
             "apiResponse": {},
             "shouldEndSession": True
         }
-        return response
+
+class PutObjectHere_API_Handler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'PutObjectHere_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        logging.debug('PutObjectHere_API Handler')
+
+        # Get API Arguments
+        args = get_api_arguments(handler_input)
+
+        # Check for `Area` Argument
+        if 'area' in args.keys(): area = args['area']
+        else: area = None
+
+        # Area Command if Defined
+        if area in available_areas: send_command(PUT_OBJECT_IN_GIVEN_AREA, area)
+        elif area in gesture_areas: send_command(PUT_OBJECT_IN_AREA_GESTURE)
+        else: send_command(PUT_OBJECT_IN_AREA)
+
+        return {
+            "apiResponse": {},
+            "shouldEndSession": True
+        }
+
+
+class ResumeMoving_API_Handler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'ResumeMoving_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        logging.debug('ResumeMoving_API Handler')
+
+        # Publish ROS Message
+        send_command(CAN_GO)
+
+        return {
+            "apiResponse": {},
+            "shouldEndSession": True
+        }
+
+class WaitForCommand_API_Handler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'WaitForCommand_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        logging.debug('WaitForCommand_API Handler')
+
+        # Publish ROS Message
+        send_command(WAIT)
+
+        return {
+            "apiResponse": {},
+            "shouldEndSession": True
+        }
