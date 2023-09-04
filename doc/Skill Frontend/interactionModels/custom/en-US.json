@@ -1,0 +1,146 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": [
+            "cancel this"
+          ]
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": [
+            "nothing",
+            "stop"
+          ]
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "slots": [],
+          "name": "Welcome",
+          "samples": [
+            "Welcome"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "synonyms": [
+                  "nope"
+                ],
+                "value": "no"
+              },
+              "id": "0"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "ok",
+                  "sure"
+                ],
+                "value": "yes"
+              },
+              "id": "1"
+            }
+          ],
+          "name": "Confirm"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "value": "empty_slot_type"
+              }
+            }
+          ],
+          "name": "Empty"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "synonyms": [
+                  "here",
+                  "there"
+                ],
+                "value": "that"
+              },
+              "id": "0"
+            },
+            {
+              "name": {
+                "value": "box"
+              },
+              "id": "1"
+            },
+            {
+              "name": {
+                "value": "left"
+              },
+              "id": "2"
+            },
+            {
+              "name": {
+                "value": "front"
+              },
+              "id": "3"
+            }
+          ],
+          "name": "area"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "synonyms": [
+                  "sec",
+                  "second"
+                ],
+                "value": "seconds"
+              }
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "min",
+                  "minute"
+                ],
+                "value": "minutes"
+              }
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "hour"
+                ],
+                "value": "hours"
+              }
+            }
+          ],
+          "name": "time_unit"
+        }
+      ],
+      "invocationName": "voice conversation",
+      "modelConfiguration": {
+        "fallbackIntentSensitivity": {
+          "level": "HIGH"
+        }
+      }
+    }
+  }
+}
