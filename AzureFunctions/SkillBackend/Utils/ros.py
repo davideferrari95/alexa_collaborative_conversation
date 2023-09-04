@@ -10,7 +10,7 @@ rospy.init_node('skill_server', disable_signals=True)
 time.sleep(1)
 
 # ROS Publishers
-command_pub = rospy.Publisher('voice_command', VoiceCommand, queue_size=1)
+command_pub = rospy.Publisher('/multimodal_fusion/voice_command', VoiceCommand, queue_size=1)
 
 def send_command(command, area=None, wait_time=None):
 
