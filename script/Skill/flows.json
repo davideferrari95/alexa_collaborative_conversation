@@ -12,8 +12,8 @@
         "type": "ros-subscribe",
         "z": "ea715408fc32b7d3",
         "server": "d5573a5bee7c42db",
-        "topicname": "/tts",
-        "x": 310,
+        "topicname": "/alexa/tts",
+        "x": 320,
         "y": 220,
         "wires": [
             [
@@ -118,7 +118,7 @@
             }
         },
         "x": 910,
-        "y": 360,
+        "y": 320,
         "wires": [
             [
                 "dc4594603e272384"
@@ -138,7 +138,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1100,
-        "y": 360,
+        "y": 320,
         "wires": []
     },
     {
@@ -146,7 +146,7 @@
         "type": "ros-subscribe",
         "z": "ea715408fc32b7d3",
         "server": "d5573a5bee7c42db",
-        "topicname": "/alexa_events",
+        "topicname": "/alexa/events",
         "x": 330,
         "y": 380,
         "wires": [
@@ -175,7 +175,7 @@
             }
         },
         "x": 890,
-        "y": 400,
+        "y": 380,
         "wires": [
             [
                 "15766e4db23c7afa"
@@ -195,7 +195,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1100,
-        "y": 400,
+        "y": 380,
         "wires": []
     },
     {
@@ -215,21 +215,27 @@
                 "t": "eq",
                 "v": "move to user",
                 "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "help special block",
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 2,
+        "outputs": 3,
         "x": 520,
         "y": 380,
         "wires": [
             [
-                "e32c369ea2b2f0a9",
                 "c529bebd480bbbe9"
             ],
             [
-                "1cdb6f0fcc0fa608",
-                "ca1b9f4f1f0335d2"
+                "1cdb6f0fcc0fa608"
+            ],
+            [
+                "be5d73e213e0f702"
             ]
         ]
     },
@@ -250,22 +256,6 @@
         "wires": []
     },
     {
-        "id": "e32c369ea2b2f0a9",
-        "type": "debug",
-        "z": "ea715408fc32b7d3",
-        "name": "debug 24",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 720,
-        "y": 300,
-        "wires": []
-    },
-    {
         "id": "1cdb6f0fcc0fa608",
         "type": "delay",
         "z": "ea715408fc32b7d3",
@@ -283,7 +273,7 @@
         "allowrate": false,
         "outputs": 1,
         "x": 720,
-        "y": 400,
+        "y": 380,
         "wires": [
             [
                 "4c7add455e1fb455"
@@ -308,7 +298,7 @@
         "allowrate": false,
         "outputs": 1,
         "x": 720,
-        "y": 360,
+        "y": 320,
         "wires": [
             [
                 "d5ee620857868155"
@@ -316,28 +306,12 @@
         ]
     },
     {
-        "id": "ca1b9f4f1f0335d2",
-        "type": "debug",
-        "z": "ea715408fc32b7d3",
-        "name": "debug 23",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 720,
-        "y": 460,
-        "wires": []
-    },
-    {
         "id": "64144d3a32bf9150",
         "type": "ros-subscribe",
         "z": "ea715408fc32b7d3",
         "server": "d5573a5bee7c42db",
-        "topicname": "/test_voice_command",
-        "x": 360,
+        "topicname": "/alexa/test_voice_command",
+        "x": 380,
         "y": 540,
         "wires": [
             [
@@ -433,6 +407,73 @@
                 "b4cd35603eb1e59f"
             ]
         ]
+    },
+    {
+        "id": "be5d73e213e0f702",
+        "type": "delay",
+        "z": "ea715408fc32b7d3",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 720,
+        "y": 440,
+        "wires": [
+            [
+                "b79a9070291381b8"
+            ]
+        ]
+    },
+    {
+        "id": "b79a9070291381b8",
+        "type": "alexa-remote-routine",
+        "z": "ea715408fc32b7d3",
+        "name": "help special block",
+        "account": "ac7b59c675058ce4",
+        "routineNode": {
+            "type": "textCommand",
+            "payload": {
+                "text": {
+                    "type": "str",
+                    "value": "ask voice conversation help special block robot request dialog"
+                },
+                "devices": [
+                    "G090XG0900860BED"
+                ]
+            }
+        },
+        "x": 910,
+        "y": 440,
+        "wires": [
+            [
+                "8fd7d507baf7e831"
+            ]
+        ]
+    },
+    {
+        "id": "8fd7d507baf7e831",
+        "type": "debug",
+        "z": "ea715408fc32b7d3",
+        "name": "debug 27",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1100,
+        "y": 440,
+        "wires": []
     },
     {
         "id": "d5573a5bee7c42db",

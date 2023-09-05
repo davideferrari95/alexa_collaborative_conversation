@@ -171,3 +171,21 @@ class Wait_API_Handler(AbstractRequestHandler):
             "apiResponse": {},
             "shouldEndSession": True
         }
+
+class HelpSpecialBlock_API_Handler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'HelpSpecialBlock_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        logger.debug('HelpSpecialBlock_API Handler')
+
+        # Publish ROS Message
+        send_command(CAN_GO)
+
+        return {
+            "apiResponse": {},
+            "shouldEndSession": True
+        }
