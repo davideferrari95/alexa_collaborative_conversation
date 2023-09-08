@@ -58,6 +58,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     skill_builder.add_request_handler(WaitForTime_API_Handler())
     skill_builder.add_request_handler(Wait_API_Handler())
     skill_builder.add_request_handler(HelpSpecialBlock_API_Handler())
+    skill_builder.add_request_handler(RobotStoppedScaling_API_Handler())
 
     # Register Interceptors
     skill_builder.add_global_request_interceptor(LoggingRequestInterceptor())
