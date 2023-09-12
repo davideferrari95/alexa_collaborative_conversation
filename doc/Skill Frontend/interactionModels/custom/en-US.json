@@ -74,31 +74,27 @@
           "values": [
             {
               "name": {
-                "synonyms": [
-                  "here",
-                  "there"
-                ],
-                "value": "that"
+                "value": "there"
               },
-              "id": "0"
+              "id": "10"
             },
             {
               "name": {
-                "value": "box"
+                "value": "here"
               },
-              "id": "1"
+              "id": "11"
             },
             {
               "name": {
                 "value": "left"
               },
-              "id": "2"
+              "id": "0"
             },
             {
               "name": {
                 "value": "front"
               },
-              "id": "3"
+              "id": "1"
             }
           ],
           "name": "area"
