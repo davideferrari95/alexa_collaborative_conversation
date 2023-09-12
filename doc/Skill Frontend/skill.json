@@ -14,7 +14,7 @@
         },
         "endpoint": {
           "sslCertificateType": "Wildcard",
-          "uri": "https://fe8b-155-185-245-82.ngrok-free.app/api/SkillBackend"
+          "uri": "https://39ed-155-185-245-82.ngrok-free.app/api/SkillBackend"
         },
         "interfaces": [
           {
