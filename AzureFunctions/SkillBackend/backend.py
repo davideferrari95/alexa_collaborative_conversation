@@ -50,15 +50,11 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     
     # Register Conversation Handlers
     skill_builder.add_request_handler(BeginExperiment_API_Handler())
-    skill_builder.add_request_handler(ObstacleDetected_ObjectMoved_API_Handler())
-    skill_builder.add_request_handler(PutObjectHere_API_Handler())
-    skill_builder.add_request_handler(ResumeMoving_API_Handler())
-    skill_builder.add_request_handler(WaitForCommand_API_Handler())
-    skill_builder.add_request_handler(MoveToUser_UserMovedBack_API_Handler())
-    skill_builder.add_request_handler(WaitForTime_API_Handler())
-    skill_builder.add_request_handler(Wait_API_Handler())
-    skill_builder.add_request_handler(HelpSpecialBlock_API_Handler())
-    skill_builder.add_request_handler(RobotStoppedScaling_API_Handler())
+    skill_builder.add_request_handler(Provide_Screw_API_Handler())
+    skill_builder.add_request_handler(Provide_Screwdriver_API_Handler())
+    skill_builder.add_request_handler(Hold_Object_API_Handler())
+    skill_builder.add_request_handler(Take_Object_API_Handler())
+    skill_builder.add_request_handler(Move_Mounting_API_Handler())
 
     # Register Interceptors
     skill_builder.add_global_request_interceptor(LoggingRequestInterceptor())

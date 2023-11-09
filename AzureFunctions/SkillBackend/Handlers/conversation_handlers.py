@@ -6,8 +6,8 @@ from ask_sdk_core.handler_input import HandlerInput
 
 # Import Utilities
 from Utils.utils import is_api_request, get_api_arguments
-from Utils.ros   import send_command
-from Utils.command_list import *
+from Utils.ros   import send_command, available_objects
+from Utils.ros   import BEGIN_EXPERIMENT, PROVIDE_SCREW, PROVIDE_SCREWDRIVER, HOLD_OBJECT, TAKE_OBJECT, MOVE_MOUNTING
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -23,185 +23,102 @@ class BeginExperiment_API_Handler(AbstractRequestHandler):
         logger.debug('BeginExperiment_API Handler')
 
         # Publish ROS Message
-        send_command(EXPERIMENT_START)
+        send_command(BEGIN_EXPERIMENT)
 
         return {
             "apiResponse": {},
             "shouldEndSession": True
         }
 
-class ObstacleDetected_ObjectMoved_API_Handler(AbstractRequestHandler):
+class Provide_Screw_API_Handler(AbstractRequestHandler):
 
     def can_handle(self, handler_input: HandlerInput):
 
-        return is_api_request(handler_input, 'ObstacleDetected_ObjectMoved_API')
+        return is_api_request(handler_input, 'Provide_Screw_API')
 
     def handle(self, handler_input: HandlerInput):
 
-        logger.debug('ObstacleDetected_ObjectMoved_API Handler')
+        logger.debug('Provide_Screw_API Handler')
+        print('Provide_Screw_API Handler')
 
         # Publish ROS Message
-        send_command(MOVED_OBJECT)
+        send_command(PROVIDE_SCREW)
 
         return {
             "apiResponse": {},
             "shouldEndSession": True
         }
 
-class PutObjectHere_API_Handler(AbstractRequestHandler):
+class Provide_Screwdriver_API_Handler(AbstractRequestHandler):
 
     def can_handle(self, handler_input: HandlerInput):
 
-        return is_api_request(handler_input, 'PutObjectHere_API')
+        return is_api_request(handler_input, 'Provide_Screwdriver_API')
 
     def handle(self, handler_input: HandlerInput):
 
-        logger.debug('PutObjectHere_API Handler')
-
-        # Get API Arguments
-        args = get_api_arguments(handler_input)
-
-        # Check for `Area` Argument
-        if 'area' in args.keys(): area = args['area']
-        else: area = None
-
-        # Area Command if Defined
-        if area in available_areas: send_command(PUT_OBJECT_IN_GIVEN_AREA, area)
-        elif area in gesture_areas: send_command(PUT_OBJECT_IN_AREA_GESTURE)
-        else: send_command(PUT_OBJECT_IN_AREA)
-
-        return {
-            "apiResponse": {},
-            "shouldEndSession": True
-        }
-
-class ResumeMoving_API_Handler(AbstractRequestHandler):
-
-    def can_handle(self, handler_input: HandlerInput):
-
-        return is_api_request(handler_input, 'ResumeMoving_API')
-
-    def handle(self, handler_input: HandlerInput):
-
-        logger.debug('ResumeMoving_API Handler')
+        logger.debug('Provide_Screwdriver_API Handler')
+        print('Provide_Screwdriver_API Handler')
 
         # Publish ROS Message
-        send_command(CAN_GO)
+        send_command(PROVIDE_SCREWDRIVER)
 
         return {
             "apiResponse": {},
             "shouldEndSession": True
         }
 
-class WaitForCommand_API_Handler(AbstractRequestHandler):
+class Hold_Object_API_Handler(AbstractRequestHandler):
 
     def can_handle(self, handler_input: HandlerInput):
 
-        return is_api_request(handler_input, 'WaitForCommand_API')
+        return is_api_request(handler_input, 'Hold_Object_API')
 
     def handle(self, handler_input: HandlerInput):
 
-        logger.debug('WaitForCommand_API Handler')
+        logger.debug('Hold_Object_API Handler')
+        print('Hold_Object_API Handler')
 
         # Publish ROS Message
-        send_command(WAIT_FOR_COMMAND)
+        send_command(HOLD_OBJECT)
 
         return {
             "apiResponse": {},
             "shouldEndSession": True
         }
 
-class MoveToUser_UserMovedBack_API_Handler(AbstractRequestHandler):
+class Take_Object_API_Handler(AbstractRequestHandler):
 
     def can_handle(self, handler_input: HandlerInput):
 
-        return is_api_request(handler_input, 'MoveToUser_UserMovedBack_API')
+        return is_api_request(handler_input, 'Take_Object_API')
 
     def handle(self, handler_input: HandlerInput):
 
-        logger.debug('MoveToUser_UserMovedBack_API Handler')
+        logger.debug('Take_Object_API Handler')
+        print('Take_Object_API Handler')
 
         # Publish ROS Message
-        send_command(USER_MOVED)
+        send_command(TAKE_OBJECT)
 
         return {
             "apiResponse": {},
             "shouldEndSession": True
         }
 
-class WaitForTime_API_Handler(AbstractRequestHandler):
+class Move_Mounting_API_Handler(AbstractRequestHandler):
 
     def can_handle(self, handler_input: HandlerInput):
 
-        return is_api_request(handler_input, 'WaitForTime_API')
+        return is_api_request(handler_input, 'Move_Mounting_API')
 
     def handle(self, handler_input: HandlerInput):
 
-        logger.debug('WaitForTime_API Handler')
-
-        # Get API Arguments
-        args = get_api_arguments(handler_input)
-
-        # Check for `time` and `time_unit` Arguments
-        time = 0 if not 'time' in args.keys() else args['time']
-        time_unit = 'seconds' if not 'time_unit' in args.keys() else args['time_unit']
+        logger.debug('Move_Mounting_API Handler')
+        print('Move_Mounting_API Handler')
 
         # Publish ROS Message
-        send_command(WAIT_TIME, wait_time=f'{time} {time_unit}')
-
-        return {
-            "apiResponse": {},
-            "shouldEndSession": True
-        }
-
-class Wait_API_Handler(AbstractRequestHandler):
-
-    def can_handle(self, handler_input: HandlerInput):
-
-        return is_api_request(handler_input, 'Wait_API')
-
-    def handle(self, handler_input: HandlerInput):
-
-        logger.debug('Wait_API Handler')
-
-        # Publish ROS Message
-        send_command(WAIT_FOR_COMMAND)
-
-        return {
-            "apiResponse": {},
-            "shouldEndSession": True
-        }
-
-class HelpSpecialBlock_API_Handler(AbstractRequestHandler):
-
-    def can_handle(self, handler_input: HandlerInput):
-
-        return is_api_request(handler_input, 'HelpSpecialBlock_API')
-
-    def handle(self, handler_input: HandlerInput):
-
-        logger.debug('HelpSpecialBlock_API Handler')
-
-        # Publish ROS Message
-        send_command(CAN_GO)
-
-        return {
-            "apiResponse": {},
-            "shouldEndSession": True
-        }
-
-class RobotStoppedScaling_API_Handler(AbstractRequestHandler):
-
-    def can_handle(self, handler_input: HandlerInput):
-
-        return is_api_request(handler_input, 'RobotStoppedScaling_API')
-
-    def handle(self, handler_input: HandlerInput):
-
-        logger.debug('RobotStoppedScaling_API Handler')
-
-        # Publish ROS Message
-        send_command(CAN_GO)
+        send_command(MOVE_MOUNTING)
 
         return {
             "apiResponse": {},
