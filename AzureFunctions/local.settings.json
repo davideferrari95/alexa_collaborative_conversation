@@ -3,7 +3,7 @@
   "Values": {
   "FUNCTIONS_WORKER_RUNTIME": "python",
   "AzureWebJobsStorage": "",
-  "AlexaSkillID": "amzn1.ask.skill.a40ec135-445f-48b2-8f36-2830743f215c",
+  "AlexaSkillID": "amzn1.ask.skill.9baea1a9-6ac3-4e5e-9464-33446ce18778",
   "UpdatesURL": "https://azure.microsoft.com/updates/feed/"
   }
 }

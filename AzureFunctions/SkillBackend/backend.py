@@ -50,7 +50,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     
     # Register Conversation Handlers
     skill_builder.add_request_handler(BeginExperiment_API_Handler())
+    # skill_builder.add_request_handler(BeginExperiment_TestDemo_API_Handler())
     skill_builder.add_request_handler(Provide_Screw_API_Handler())
+    # skill_builder.add_request_handler(Provide_Screw_TestDemo_API_Handler())
     skill_builder.add_request_handler(Provide_Screwdriver_API_Handler())
     skill_builder.add_request_handler(Hold_Object_API_Handler())
     skill_builder.add_request_handler(Take_Object_API_Handler())
