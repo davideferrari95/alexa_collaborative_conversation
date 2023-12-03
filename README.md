@@ -1,16 +1,16 @@
-# Alexa_conversation_voice_control
+# Alexa Conversation
 
-Package that allows communication between ROS and Alexa, implementing two different communication channels:
+Package that allows communication between ROS2 and Alexa, implementing two different communication channels:
 
-- User → ROS: through a custom Alexa Conversation Skill that communicates with a local server in azure functions.
-- ROS → User: using unsolicited Text-To-Speech of Node-RED block that use Alexa-API
+- User → ROS2: through a custom Alexa Conversation Skill that communicates with a local server in azure functions.
+- ROS2 → User: using unsolicited Text-To-Speech of Node-RED block that use Alexa-API
 
 ## Requirements
 
 - Ubuntu 20.04+
-- Python 3.10+
-- ROS Noetic+
-- ROS-Bridge
+- Python 3.8.10
+- ROS2 Foxy
+- ROS2-Bridge
 - Azure 4.0+
 - Node-RED
 - ngrok
@@ -20,19 +20,19 @@ Package that allows communication between ROS and Alexa, implementing two differ
 
 ### Prerequisites
 
-- Install ROS Noetic: [Ubuntu Guide](http://wiki.ros.org/noetic/Installation/Ubuntu)
+- Install ROS2 Foxy: [Ubuntu Guide](https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html)
 
-        sudo apt install ros-noetic-desktop-full
+        sudo apt install ros-foxy-desktop python3-argcomplete
 
 - Install `rosbridge` suite:
 
-        sudo apt-get install ros-noetic-rosbridge-server
+        sudo apt-get install ros-foxy-rosbridge-server
 
 - Install `miniconda`: [Official Guide](https://docs.conda.io/en/main/miniconda.html)
 
 - Create a `conda` environment with `openssl=3.0.9`:
 
-        conda create --name alexa_env python=3.10 openssl=3.0.9
+        conda create --name alexa_conversation_env python=3.8.10 openssl=3.0.9
 
 - Install dependencies in `requirements.txt`:
 
@@ -88,15 +88,15 @@ Package that allows communication between ROS and Alexa, implementing two differ
 
   - ROS → Node RED:
 
-        node-red-contrib-alexa-remote2-applestrudel
+        node-red-contrib-ros2
 
   - Node RED → Alexa:
 
-        node-red-contrib-ros
+        node-red-contrib-alexa-remote2-applestrudel
 
 - You can install the Node-RED packages also using `npm`:
 
-        npm install node-red-contrib-ros
+        npm install node-red-contrib-ros2
         npm install node-red-contrib-alexa-remote2-applestrudel
 
 ### Ngrok
@@ -109,7 +109,7 @@ Package that allows communication between ROS and Alexa, implementing two differ
 
 ### node-red-contrib-ros
 
-- in sub/pub node → ROS SERVER → add new ROS server:
+- in sub/pub node → ROS2 SERVER → add new ROS2 server:
 
         url: ws://localhost:9091/
         Topic: name_topic
@@ -170,7 +170,7 @@ Package that allows communication between ROS and Alexa, implementing two differ
 
 - Launch `skill_backend_launcher`:
 
-        roslaunch alexa_conversation skill_backend.launch
+        ros2 launch alexa_conversation skill_backend_launch.py
 
 - Run Azure Functions locally:
 

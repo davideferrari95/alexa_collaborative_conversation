@@ -1,52 +1,72 @@
 #!/usr/bin/env python3
-import subprocess, os, threading, signal
-import rospy, rospkg
+
+import os, subprocess, signal, threading
+import rclpy
+from rclpy.node import Node
 
 # Import Utilities
 from utils import delete_pycache_folders
 
-# Open ROS Skill Server in a Separate Thread
-threading.Thread(target=lambda: rospy.init_node('skill_launcher', disable_signals=True)).start()
+class SkillLauncher(Node):
 
-# Get Launch Parameters
-launch_azure    = rospy.get_param('/skill_backend_launcher/launch_azure', False)
-launch_ngrok    = rospy.get_param('/skill_backend_launcher/launch_ngrok', False)
-launch_node_red = rospy.get_param('/skill_backend_launcher/launch_node_red', False)
+    def __init__(self, node_name='skill_launcher'):
 
-# Get Path to Package
-rospack = rospkg.RosPack()
-path = rospack.get_path('alexa_conversation')
+        # Initialize ROS Node
+        super().__init__(node_name)
 
-# Set Path to ngrok
-NGROK_PATH = '/home/davide/Documenti/Programmi/ngrok/'
+        # # Open ROS Skill Server in a Separate Thread
+        # threading.Thread(target=lambda: rospy.init_node('skill_launcher', disable_signals=True)).start()
 
-# Launch Node-RED, ngrok and Azure in Separate Terminals
-if launch_ngrok:    NGROK    = subprocess.Popen('gnome-terminal -e "./ngrok http 7071"', cwd=f'{NGROK_PATH}', shell=True)
-if launch_node_red: NODE_RED = subprocess.Popen('gnome-terminal -- "node-red"', shell=True)
-if launch_azure:    AZURE    = subprocess.Popen('func start', cwd=f'{path}/AzureFunctions/', shell=True)
+        # Declare Launch Parameters
+        self.declare_parameter('launch_azure',    False)
+        self.declare_parameter('launch_ngrok',    False)
+        self.declare_parameter('launch_node_red', False)
 
-def handle_signal(sig, frame):
+        # Get Launch Parameters
+        self.launch_azure    = self.get_parameter('launch_azure').get_parameter_value().bool_value
+        self.launch_ngrok    = self.get_parameter('launch_ngrok').get_parameter_value().bool_value
+        self.launch_node_red = self.get_parameter('launch_node_red').get_parameter_value().bool_value
 
-    # SIGINT (Ctrl+C)
-    print("\nProgram Interrupted. Killing Opened Terminal...\n")
+        # Get Path to Package
+        # rospack = rospkg.RosPack()
+        # path = rospack.get_path('alexa_conversation')
 
-    # Kill Node-RED and ngrok
-    if launch_ngrok:    os.system('killall node-red')
-    if launch_node_red: os.system('killall ngrok')
+        # Set Path to ngrok
+        NGROK_PATH = '/home/davide/Documenti/Programmi/ngrok/'
 
-    # Wait for Azure Functions
-    if launch_azure:    AZURE.wait()
+        # Launch Node-RED, ngrok and Azure in Separate Terminals
+        if self.launch_ngrok:    self.NGROK    = subprocess.Popen('gnome-terminal -e "./ngrok http 7071"', cwd=f'{NGROK_PATH}', shell=True)
+        if self.launch_node_red: self.NODE_RED = subprocess.Popen('gnome-terminal -- "node-red"', shell=True)
+        if self.launch_azure:    self.AZURE    = subprocess.Popen('func start', cwd=f'{path}/AzureFunctions/', shell=True)
 
-    # Delete `__pycache__` Folders
-    delete_pycache_folders(verbose=True)
+        # Register Signal Handler
+        signal.signal(signal.SIGINT, self.handle_signal)
 
-    print("\nDone\n\n")
-    exit(0)
+    def handle_signal(self, sig, frame):
 
-# Register Signal Handler
-signal.signal(signal.SIGINT, handle_signal)
+        # SIGINT (Ctrl+C)
+        print("\nProgram Interrupted. Killing Opened Terminal...\n")
+
+        # Kill Node-RED and ngrok
+        if self.launch_ngrok:    os.system('killall node-red')
+        if self.launch_node_red: os.system('killall ngrok')
+
+        # Wait for Azure Functions
+        if self.launch_azure: self.AZURE.wait()
+
+        # Delete `__pycache__` Folders
+        delete_pycache_folders(verbose=True)
+
+        print("\nDone\n\n")
+        exit(0)
 
 if __name__ == '__main__':
 
-    # Wait Until ROS::OK()
-    while not rospy.is_shutdown(): pass
+    # Initialize ROS
+    rclpy.init(None)
+
+    # Initialize Skill Launcher
+    launcher = SkillLauncher()
+    
+    # Spin Launcher Node
+    while rclpy.ok(): rclpy.spin(launcher)
