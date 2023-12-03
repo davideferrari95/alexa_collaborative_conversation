@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 
-import rospy, rospkg, sys
+import rclpy, time, sys
+from rclpy.node import Node
 from typing import List
 
 # Import ROS Messages
-from std_msgs.msg import String, Bool
+from std_msgs.msg import String
 from geometry_msgs.msg import Pose
-from alexa_conversation.msg import VoiceCommand
+from alexa_voice_control.msg import VoiceCommand
 
 # Import Parent Folders
-sys.path.append(f'{rospkg.RosPack().get_path("alexa_conversation")}/script/utils')
+# sys.path.append(f'{rospkg.RosPack().get_path("alexa_conversation")}/script/utils')
 
 # Move Robot Utilities
 from move_robot import UR10e_RTDE_Move, GRIPPER_OPEN, GRIPPER_CLOSE
@@ -30,7 +31,7 @@ Labelling:
 
 """
 
-class ExperimentManager():
+class ExperimentManager(Node):
 
     # TTS Error Messages
     PROVIDE_SCREW_STRING        = 'give me screws'
@@ -42,33 +43,36 @@ class ExperimentManager():
     # Flags
     experiment_started = False
 
-    def __init__(self) -> None:
+    def __init__(self, node_name='experiment_manager'):
 
-        # Init ROS Node
-        rospy.init_node('Experiment_Manager')
+        # Initialize ROS node
+        super().__init__(node_name)
 
         # Instance Robot Movement Class
         self.robot = UR10e_RTDE_Move()
 
         # Publishers
-        self.ttsPub   = rospy.Publisher('/alexa/tts', String, queue_size=1)
-        self.eventPub = rospy.Publisher('/alexa/events', String, queue_size=1)
+        self.tts_pub = self.create_publisher(String, '/alexa/tts', 1)
+        self.eventPub = self.create_publisher(String, '/alexa/events', 1)
 
         # Subscribers
-        rospy.Subscriber('/alexa_conversation/voice_command', VoiceCommand, self.commandCallback)
+        self.voice_command_sub = self.create_subscription(VoiceCommand, '/alexa_conversation/voice_command', self.commandCallback, 1)
 
         # Load Parameters
-        self.gripper_enabled = rospy.get_param('/experiment/gripper_enabled', True)
+        self.declare_parameter('gripper_enabled', False)
+        self.gripper_enabled = self.get_parameter('gripper_enabled').get_parameter_value().bool_value
 
         # Initialization Sleep
-        rospy.sleep(1)
+        time.sleep(1)
 
     def commandCallback(self, data:VoiceCommand):
 
-        rospy.logwarn(f"Received Command: {data}")
+        """ Voice Command Callback """
+
+        self.get_logger().warn(f"Received Command: {data}")
 
         # Start / Stop Experiment Command -> Set Flags
-        if   data.command == BEGIN_EXPERIMENT: self.experiment_started = True; return
+        if   data.command in [BEGIN_EXPERIMENT]: self.experiment_started = True; return
 
         # Empty or Unused Commands -> Do Nothing
         elif data.command in [NULL]: return
@@ -88,7 +92,7 @@ class ExperimentManager():
         # `Move Mounting` Command -> Move Mounting Command
         elif data.command in [MOVE_MOUNTING]: self.move_mounting()
 
-    def publish_event(self, event: str) -> None:
+    def publish_event(self, event:str) -> None:
 
         """ Publish Alexa Event """
 
@@ -96,7 +100,7 @@ class ExperimentManager():
         event_msg = String()
         event_msg.data = event
         self.eventPub.publish(event_msg)
-        rospy.logwarn(f'EVENT: {event}')
+        self.get_logger().warn(f'EVENT: {event}')
 
     def pick_and_place(self, object_name) -> bool:
 
@@ -107,64 +111,64 @@ class ExperimentManager():
         assert pick_position is not None and place_position is not None, f"Object Positions not Found for Object {object_name}"
 
         # Move Gripper to Starting Position
-        rospy.loginfo('Open Gripper')
+        self.get_logger().info('Open Gripper')
         if not self.robot.move_gripper(GRIPPER_OPEN, gripper_enabled=self.gripper_enabled): return False
 
         # Forward + Inverse Kinematic -> Increase z + 10cm
-        rospy.loginfo('Forward Kinematic + Inverse Kinematic -> Increase z + 10cm')
+        self.get_logger().info('Forward Kinematic + Inverse Kinematic -> Increase z + 10cm')
         pick_position_cartesian: Pose = self.robot.FK(pick_position)
         pick_position_cartesian.position.z += 0.10
         pick_position_up: List[float] = self.robot.IK(pick_position_cartesian, pick_position)
 
         # Move 10cm Over the Object
-        rospy.loginfo('Move Over the Object')
+        self.get_logger().info('Move Over the Object')
         if not self.robot.move_joint(pick_position_up): return False
 
         # Move to Object
-        rospy.loginfo('Move To the Object')
+        self.get_logger().info('Move To the Object')
         if not self.robot.move_joint(pick_position): return False
 
         # Grip Object
-        rospy.loginfo('Close Gripper')
+        self.get_logger().info('Close Gripper')
         if object_name == 'screws': 
             if not self.robot.move_gripper(GRIPPER_CLOSE, 50, 50, gripper_enabled=self.gripper_enabled): return False
         elif not self.robot.move_gripper(GRIPPER_CLOSE, gripper_enabled=self.gripper_enabled): return False
-        rospy.sleep(1)
+        time.sleep(1)
 
         # Move 10cm Over the Object
-        rospy.loginfo('Move Over the Object')
+        self.get_logger().info('Move Over the Object')
         if not self.robot.move_joint(pick_position_up): return False
 
         # Forward + Inverse Kinematic -> Increase z + 10cm
-        rospy.loginfo('Forward Kinematic + Inverse Kinematic -> Increase z + 10cm')
-        place_position_cartesian: Pose() = self.robot.FK(place_position)
+        self.get_logger().info('Forward Kinematic + Inverse Kinematic -> Increase z + 10cm')
+        place_position_cartesian:Pose = self.robot.FK(place_position)
         place_position_cartesian.position.z += 0.10
         place_position_up: List[float] = self.robot.IK(place_position_cartesian, place_position)
 
         # Move 10cm Over the Place Position
-        rospy.loginfo('Move Over the Place Position')
+        self.get_logger().info('Move Over the Place Position')
         if not self.robot.move_joint(place_position_up): return False
 
         # Move to Place Position
-        rospy.loginfo('Move To the Place Position')
+        self.get_logger().info('Move To the Place Position')
         if not self.robot.move_joint(place_position): return False
 
         # Release Object
-        rospy.loginfo('Open Gripper')
+        self.get_logger().info('Open Gripper')
         if not self.robot.move_gripper(GRIPPER_OPEN, gripper_enabled=self.gripper_enabled): return False
-        rospy.sleep(1)
+        time.sleep(1)
 
         # Move 10cm Over the Place Position
-        rospy.loginfo('Move Over the Place Position')
+        self.get_logger().info('Move Over the Place Position')
         if not self.robot.move_joint(place_position_up): return False
 
         # Move to Home
-        rospy.loginfo('Move To Home')
+        self.get_logger().info('Move To Home')
         if not self.robot.move_joint(HOME_POSITION): return False
 
         # Provide Screwdriver Dialog
         if object_name == 'screws': self.publish_event(self.PROVIDE_SCREWDRIVER_STRING)
-        if object_name == 'screwdriver': rospy.sleep(3); self.publish_event(self.HOLD_OBJECT_STRING)
+        if object_name == 'screwdriver': time.sleep(3); self.publish_event(self.HOLD_OBJECT_STRING)
 
         return True
 
@@ -173,11 +177,11 @@ class ExperimentManager():
         """ Hold Object """
 
         # Move Gripper to Starting Position
-        rospy.loginfo('Open Gripper')
+        self.get_logger().info('Open Gripper')
         if not self.robot.move_gripper(GRIPPER_OPEN, gripper_enabled=self.gripper_enabled): return False
 
         # Move to Object Hold Position
-        rospy.loginfo('Move To the Hold Position')
+        self.get_logger().info('Move To the Hold Position')
         if not self.robot.move_joint(HOLD_POSITION): return False
 
         # Take It Dialog
@@ -190,9 +194,9 @@ class ExperimentManager():
         """ Take Object """
 
         # Grip Object
-        rospy.loginfo('Close Gripper')
+        self.get_logger().info('Close Gripper')
         if not self.robot.move_gripper(GRIPPER_CLOSE, gripper_enabled=self.gripper_enabled): return False
-        rospy.sleep(1)
+        time.sleep(1)
 
         # Mounting Dialog
         self.publish_event(self.HOLD_MOUNTING_STRING)
@@ -204,7 +208,7 @@ class ExperimentManager():
         """ Move Mounting """
 
         # Move to Mount Position
-        rospy.loginfo('Move To the Mount Position')
+        self.get_logger().info('Move To the Mount Position')
         if not self.robot.move_joint(MOUNT_POSITION): return False
 
         return True
@@ -214,20 +218,20 @@ class ExperimentManager():
         """ Run the Experiment """
 
         # Move to Home
-        rospy.loginfo('Move To Home')
+        self.get_logger().info('Move To Home')
         if not self.robot.move_joint(HOME_POSITION): return False
 
         # Wait for Experiment Start
-        while not self.experiment_started and not rospy.is_shutdown(): rospy.loginfo_throttle(5, 'Waiting for Experiment Start')
+        while not self.experiment_started and rclpy.ok(): self.get_logger().info('Waiting for Experiment Start', throttle_duration_sec=5, skip_first=True)
 
         # Start Experiment -> Pick-And-Place Base
-        rospy.logwarn('Start Experiment - Move to Home')
+        self.get_logger().warn('Start Experiment - Move to Home')
         self.pick_and_place('base')
 
         # Provide Screws Dialog
         self.publish_event(self.PROVIDE_SCREW_STRING)
 
-        rospy.spin()
+        rclpy.spin()
 
 if __name__ == '__main__':
 
@@ -235,4 +239,4 @@ if __name__ == '__main__':
     exp = ExperimentManager()
 
     # Run the Experiment
-    while not rospy.is_shutdown(): exp.run()
+    while rclpy.ok(): exp.run()

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import os, sys, json
-import rospy, rospkg
+import rclpy
 
 # Azure Functions
 import azure.functions as func
@@ -9,8 +9,8 @@ import azure.functions as func
 from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_webservice_support.webservice_handler import WebserviceSkillHandler
 
-# Import Parent Folders
-sys.path.append(f'{rospkg.RosPack().get_path("alexa_conversation")}/AzureFunctions/SkillBackend')
+# # Import Parent Folders
+# sys.path.append(f'{rospkg.RosPack().get_path("alexa_conversation")}/AzureFunctions/SkillBackend')
 
 # Import Intent and Conversation Handlers
 from Handlers.intent_handlers import *
