@@ -2,52 +2,36 @@
 
 import rclpy, time, sys
 from rclpy.node import Node
-from pathlib import Path
 
 # Import Messages
 from alexa_conversation.msg import VoiceCommand
 
-# # Import Parent Folders
-# sys.path.append(f'{rospkg.RosPack().get_path("alexa_conversation")}/script')
-
-# # Import Parent Folders
-# sys.path.append(str(Path(__file__).resolve().parents[1] / "utils"))
+# Import Parent Folders
+from pathlib import Path
+sys.path.append(f'{str(Path(__file__).resolve().parents[3])}/script/utils')
 
 # Import Command List
 from command_list import *
 from object_list import *
 
-class SkillServer(Node):
+# Initialize ROS
+rclpy.init()
+node = Node('skill_server')
 
-    def __init__(self, node_name='skill_server'):
+# ROS Publishers
+command_pub = node.create_publisher(VoiceCommand, '/alexa_conversation/voice_command', 1)
 
-        # Initialize Node
-        super().__init__(node_name)
+# Wait for Initialization
+time.sleep(1)
 
-        # ROS Publishers
-        self.command_pub = self.create_publisher(VoiceCommand, '/alexa_conversation/voice_command', 1)
+def send_command(self, command, object=None):
 
-        time.sleep(1)
+    # Voice Command Message
+    msg = VoiceCommand()
+    msg.command = command
+    msg.info = command_info[command]
 
-    def send_command(self, command, object=None):
+    # Area Command if Defined
+    msg.object = object if object in available_objects else ''
 
-        # Voice Command Message
-        msg = VoiceCommand()
-        msg.command = command
-        msg.info = command_info[command]
-
-        # Area Command if Defined
-        msg.object = object if object in available_objects else ''
-
-        self.command_pub.publish(msg)
-
-def init_ros():
-
-    # Initialize ROS
-    rclpy.init()
-
-    # Initialize Skill Server
-    server = SkillServer()
-
-    # Spin Server Node
-    while rclpy.ok(): rclpy.spin_once(server)
+    self.command_pub.publish(msg)

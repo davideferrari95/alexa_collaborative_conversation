@@ -1,17 +1,21 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.launch_description_sources import FrontendLaunchDescriptionSource
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
-from ament_index_python.packages import get_package_share_directory
+from pathlib import Path
 
 def create_alexa_node():
+
+    # Get Package Path
+    package_path = str(Path(__file__).resolve().parents[1])
 
     # Python Node - Parameters
     node_parameters = {
         'launch_azure':    LaunchConfiguration('azure'),
         'launch_ngrok':    LaunchConfiguration('ngrok'),
         'launch_node_red': LaunchConfiguration('node_red'),
+        'ngrok_path':      LaunchConfiguration('ngrok_path'),
+        'package_path':    package_path,
     }
 
     # Alexa Skill Back-End - Node
@@ -28,20 +32,17 @@ def generate_launch_description():
     # Launch Description
     launch_description = LaunchDescription()
 
-    # Example - Arguments
-    launch_azure_arg    = DeclareLaunchArgument('azure',    default_value='true')
-    launch_ngrok_arg    = DeclareLaunchArgument('ngrok',    default_value='true')
-    launch_node_red_arg = DeclareLaunchArgument('node_red', default_value='true')
+    # Arguments
+    launch_azure_arg    = DeclareLaunchArgument('azure',      default_value='true')
+    launch_ngrok_arg    = DeclareLaunchArgument('ngrok',      default_value='true')
+    launch_node_red_arg = DeclareLaunchArgument('node_red',   default_value='true')
+    ngrok_path_arg      = DeclareLaunchArgument('ngrok_path', default_value='/home/davide/Documenti/Programmi/ngrok/')
 
     # Launch Description - Add Arguments
     launch_description.add_action(launch_azure_arg)
     launch_description.add_action(launch_ngrok_arg)
     launch_description.add_action(launch_node_red_arg)
-
-    # Include Rosbridge Launch File
-    rosbridge_dir = get_package_share_directory('rosbridge_server')
-    rosbridge_launch = IncludeLaunchDescription(FrontendLaunchDescriptionSource(rosbridge_dir + '/launch/rosbridge_websocket_launch.xml'), launch_arguments={'port':'9091'}.items())
-    launch_description.add_action(rosbridge_launch)
+    launch_description.add_action(ngrok_path_arg)
 
     # Launch Description - Add Nodes
     launch_description.add_action(create_alexa_node())

@@ -5,7 +5,7 @@ import rclpy
 from rclpy.node import Node
 
 # Import Utilities
-from utils import delete_pycache_folders
+from utils import get_ros2_workspace_path, delete_pycache_folders
 
 class SkillLauncher(Node):
 
@@ -14,30 +14,52 @@ class SkillLauncher(Node):
         # Initialize ROS Node
         super().__init__(node_name)
 
-        # # Open ROS Skill Server in a Separate Thread
+        # TODO: Open ROS Skill Server in a Separate Thread
         # threading.Thread(target=lambda: rospy.init_node('skill_launcher', disable_signals=True)).start()
 
         # Declare Launch Parameters
         self.declare_parameter('launch_azure',    False)
         self.declare_parameter('launch_ngrok',    False)
         self.declare_parameter('launch_node_red', False)
+        self.declare_parameter('package_path',    '')
+        self.declare_parameter('ngrok_path',      '')
 
         # Get Launch Parameters
         self.launch_azure    = self.get_parameter('launch_azure').get_parameter_value().bool_value
         self.launch_ngrok    = self.get_parameter('launch_ngrok').get_parameter_value().bool_value
         self.launch_node_red = self.get_parameter('launch_node_red').get_parameter_value().bool_value
 
-        # Get Path to Package
-        # rospack = rospkg.RosPack()
-        # path = rospack.get_path('alexa_conversation')
+        # Package and ngrok Path
+        PACKAGE_PATH = self.get_parameter('package_path').get_parameter_value().string_value
+        NGROK_PATH   = self.get_parameter('ngrok_path').get_parameter_value().string_value
 
-        # Set Path to ngrok
-        NGROK_PATH = '/home/davide/Documenti/Programmi/ngrok/'
+        # ROS2 Workspace Path and Home Path
+        WORKSPACE_PATH = get_ros2_workspace_path()
+        HOME_PATH      = os.path.expanduser('~')
+
+        # Assert Paths Exist
+        assert os.path.exists(PACKAGE_PATH),   f'Package Path {PACKAGE_PATH} does not exist'
+        assert os.path.exists(NGROK_PATH),     f'ngrok Path {NGROK_PATH} does not exist'
+        assert os.path.exists(WORKSPACE_PATH), f'ROS2 Workspace Path {WORKSPACE_PATH} does not exist'
+
+        # Launch Node-RED Command
+        NODE_RED_COMMAND = (
+            f"source {WORKSPACE_PATH}/install/setup.bash && "
+            "source /opt/ros/foxy/setup.bash && "
+            "export ROS_DOMAIN_ID=10 && "
+            f"node-red -u {HOME_PATH}/.node-red-2"
+        )
+
+        # Launch ngrok Command
+        NGROK_COMMAND = (
+            f"cd {NGROK_PATH} && "
+            "./ngrok http 7071"
+        )
 
         # Launch Node-RED, ngrok and Azure in Separate Terminals
-        if self.launch_ngrok:    self.NGROK    = subprocess.Popen('gnome-terminal -e "./ngrok http 7071"', cwd=f'{NGROK_PATH}', shell=True)
-        if self.launch_node_red: self.NODE_RED = subprocess.Popen('gnome-terminal -- "node-red"', shell=True)
-        if self.launch_azure:    self.AZURE    = subprocess.Popen('func start', cwd=f'{path}/AzureFunctions/', shell=True)
+        if self.launch_ngrok:    self.NGROK    = subprocess.Popen(["gnome-terminal", "--", "bash", "-c", NGROK_COMMAND])
+        if self.launch_node_red: self.NODE_RED = subprocess.Popen(["gnome-terminal", "--", "bash", "-c", NODE_RED_COMMAND])
+        if self.launch_azure:    self.AZURE    = subprocess.Popen('func start', cwd=f'{PACKAGE_PATH}/AzureFunctions/', shell=True)
 
         # Register Signal Handler
         signal.signal(signal.SIGINT, self.handle_signal)
@@ -63,7 +85,7 @@ class SkillLauncher(Node):
 if __name__ == '__main__':
 
     # Initialize ROS
-    rclpy.init(None)
+    rclpy.init()
 
     # Initialize Skill Launcher
     launcher = SkillLauncher()

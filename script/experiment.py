@@ -10,7 +10,8 @@ from geometry_msgs.msg import Pose
 from alexa_voice_control.msg import VoiceCommand
 
 # Import Parent Folders
-# sys.path.append(f'{rospkg.RosPack().get_path("alexa_conversation")}/script/utils')
+from pathlib import Path
+sys.path.append(f'{str(Path(__file__).resolve().parents[1])}/script/utils')
 
 # Move Robot Utilities
 from move_robot import UR10e_RTDE_Move, GRIPPER_OPEN, GRIPPER_CLOSE
@@ -234,6 +235,9 @@ class ExperimentManager(Node):
         rclpy.spin()
 
 if __name__ == '__main__':
+
+    # Initialize ROS
+    rclpy.init()
 
     # Initialize Experiment Manager Node
     exp = ExperimentManager()
