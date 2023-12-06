@@ -24,7 +24,7 @@ command_pub = node.create_publisher(VoiceCommand, '/alexa_conversation/voice_com
 # Wait for Initialization
 time.sleep(1)
 
-def send_command(self, command, object=None):
+def send_command(command, object=None):
 
     # Voice Command Message
     msg = VoiceCommand()
@@ -34,4 +34,4 @@ def send_command(self, command, object=None):
     # Area Command if Defined
     msg.object = object if object in available_objects else ''
 
-    self.command_pub.publish(msg)
+    command_pub.publish(msg)
