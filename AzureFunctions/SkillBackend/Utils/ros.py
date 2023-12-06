@@ -8,7 +8,7 @@ from alexa_conversation.msg import VoiceCommand
 
 # Import Parent Folders
 from pathlib import Path
-sys.path.append(f'{str(Path(__file__).resolve().parents[3])}/script/utils')
+sys.path.append(f'{str(Path(__file__).resolve().parents[3])}/scripts/utils')
 
 # Import Command List
 from command_list import *

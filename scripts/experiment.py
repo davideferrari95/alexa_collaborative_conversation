@@ -11,7 +11,7 @@ from alexa_voice_control.msg import VoiceCommand
 
 # Import Parent Folders
 from pathlib import Path
-sys.path.append(f'{str(Path(__file__).resolve().parents[1])}/script/utils')
+sys.path.append(f'{str(Path(__file__).resolve().parents[1])}/scripts/utils')
 
 # Move Robot Utilities
 from move_robot import UR10e_RTDE_Move, GRIPPER_OPEN, GRIPPER_CLOSE
