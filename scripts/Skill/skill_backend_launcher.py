@@ -14,9 +14,6 @@ class SkillLauncher(Node):
         # Initialize ROS Node
         super().__init__(node_name)
 
-        # TODO: Open ROS Skill Server in a Separate Thread
-        # threading.Thread(target=lambda: rospy.init_node('skill_launcher', disable_signals=True)).start()
-
         # Declare Launch Parameters
         self.declare_parameter('launch_azure',    False)
         self.declare_parameter('launch_ngrok',    False)
