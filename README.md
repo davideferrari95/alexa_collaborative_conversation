@@ -57,7 +57,7 @@ Package that allows communication between ROS2 and Alexa, implementing two diffe
             Ubuntu 17.04            zesty
             Ubuntu 16.04            xenial
 
-- Install the Azure SDK:
+- Install the `Azure SDK`:
 
         sudo apt-get update
         sudo apt-get install azure-functions-core-tools-4
@@ -70,7 +70,7 @@ Package that allows communication between ROS2 and Alexa, implementing two diffe
         sudo bash /tmp/nodesource_setup.sh
         sudo apt install nodejs
 
-- To install Node-RED you can use the `npm` command that comes with `node.js`:
+- To install `Node-RED` you can use the `npm` command that comes with `node.js`:
 
         sudo apt install npm
         sudo npm install -g --unsafe-perm node-red
@@ -90,6 +90,10 @@ Package that allows communication between ROS2 and Alexa, implementing two diffe
         pip install ask-sdk-core
 
 #### Configuration of `node-red-contrib-alexa-remote2-applestrudel`
+
+- Start `Node-RED`:
+
+        node-red -u ~/.node-red-2
 
 - Add the `Alexa Init` Node to the Node-RED flow
 
