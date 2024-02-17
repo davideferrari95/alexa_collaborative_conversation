@@ -47,7 +47,6 @@ ament_python_install_package(scripts)
 install(PROGRAMS
   scripts/Skill/skill_backend_launcher.py
   scripts/TTS/node_red.py
-  scripts/experiment.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -59,8 +58,6 @@ install(DIRECTORY
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
-  #set(ament_cmake_copyright_FOUND TRUE)
-  #set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
 

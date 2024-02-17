@@ -10,9 +10,6 @@ from alexa_conversation.msg import VoiceCommand
 from pathlib import Path
 sys.path.append(f'{str(Path(__file__).resolve().parents[3])}/scripts/utils')
 
-# Import Command List
-from command_list import *
-from object_list import *
 
 # Initialize ROS
 rclpy.init()
@@ -29,9 +26,6 @@ def send_command(command, object=None):
     # Voice Command Message
     msg = VoiceCommand()
     msg.command = command
-    msg.info = command_info[command]
-
-    # Area Command if Defined
-    msg.object = object if object in available_objects else ''
+    msg.object = object
 
     command_pub.publish(msg)

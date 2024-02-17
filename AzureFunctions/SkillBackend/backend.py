@@ -49,14 +49,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     # skill_builder.add_request_handler(TestIntentHandler())
     
     # Register Conversation Handlers
-    skill_builder.add_request_handler(BeginExperiment_API_Handler())
-    # skill_builder.add_request_handler(BeginExperiment_TestDemo_API_Handler())
-    skill_builder.add_request_handler(Provide_Screw_API_Handler())
-    # skill_builder.add_request_handler(Provide_Screw_TestDemo_API_Handler())
-    skill_builder.add_request_handler(Provide_Screwdriver_API_Handler())
-    skill_builder.add_request_handler(Hold_Object_API_Handler())
-    skill_builder.add_request_handler(Take_Object_API_Handler())
-    skill_builder.add_request_handler(Move_Mounting_API_Handler())
+    skill_builder.add_request_handler(Provide_Object_API_Handler())
 
     # Register Interceptors
     skill_builder.add_global_request_interceptor(LoggingRequestInterceptor())
