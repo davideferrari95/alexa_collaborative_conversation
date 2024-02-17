@@ -14,7 +14,6 @@ def create_alexa_node():
         'launch_azure':    LaunchConfiguration('azure'),
         'launch_ngrok':    LaunchConfiguration('ngrok'),
         'launch_node_red': LaunchConfiguration('node_red'),
-        'ngrok_path':      LaunchConfiguration('ngrok_path'),
         'package_path':    package_path,
     }
 
@@ -36,13 +35,11 @@ def generate_launch_description():
     launch_azure_arg    = DeclareLaunchArgument('azure',      default_value='true')
     launch_ngrok_arg    = DeclareLaunchArgument('ngrok',      default_value='true')
     launch_node_red_arg = DeclareLaunchArgument('node_red',   default_value='true')
-    ngrok_path_arg      = DeclareLaunchArgument('ngrok_path', default_value='/home/davide/Documenti/Programmi/ngrok/')
 
     # Launch Description - Add Arguments
     launch_description.add_action(launch_azure_arg)
     launch_description.add_action(launch_ngrok_arg)
     launch_description.add_action(launch_node_red_arg)
-    launch_description.add_action(ngrok_path_arg)
 
     # Launch Description - Add Nodes
     launch_description.add_action(create_alexa_node())

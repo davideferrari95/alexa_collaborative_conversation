@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os, subprocess, signal, threading
+import os, subprocess, signal
 import rclpy
 from rclpy.node import Node
 
@@ -19,24 +19,19 @@ class SkillLauncher(Node):
         self.declare_parameter('launch_ngrok',    False)
         self.declare_parameter('launch_node_red', False)
         self.declare_parameter('package_path',    '')
-        self.declare_parameter('ngrok_path',      '')
 
         # Get Launch Parameters
         self.launch_azure    = self.get_parameter('launch_azure').get_parameter_value().bool_value
         self.launch_ngrok    = self.get_parameter('launch_ngrok').get_parameter_value().bool_value
         self.launch_node_red = self.get_parameter('launch_node_red').get_parameter_value().bool_value
 
-        # Package and ngrok Path
+        # Package, ROS2 Workspace Path and Home Path
         PACKAGE_PATH = self.get_parameter('package_path').get_parameter_value().string_value
-        NGROK_PATH   = self.get_parameter('ngrok_path').get_parameter_value().string_value
-
-        # ROS2 Workspace Path and Home Path
         WORKSPACE_PATH = get_ros2_workspace_path()
         HOME_PATH      = os.path.expanduser('~')
 
         # Assert Paths Exist
         assert os.path.exists(PACKAGE_PATH),   f'Package Path {PACKAGE_PATH} does not exist'
-        assert os.path.exists(NGROK_PATH),     f'ngrok Path {NGROK_PATH} does not exist'
         assert os.path.exists(WORKSPACE_PATH), f'ROS2 Workspace Path {WORKSPACE_PATH} does not exist'
 
         # Launch Node-RED Command
@@ -47,14 +42,8 @@ class SkillLauncher(Node):
             f"node-red -u {HOME_PATH}/.node-red-2"
         )
 
-        # Launch ngrok Command
-        NGROK_COMMAND = (
-            f"cd {NGROK_PATH} && "
-            "./ngrok http 7071"
-        )
-
         # Launch Node-RED, ngrok and Azure in Separate Terminals
-        if self.launch_ngrok:    self.NGROK    = subprocess.Popen(["gnome-terminal", "--", "bash", "-c", NGROK_COMMAND])
+        if self.launch_ngrok:    self.NGROK    = subprocess.Popen(["gnome-terminal", "--", "bash", "-c", 'ngrok http 7071'])
         if self.launch_node_red: self.NODE_RED = subprocess.Popen(["gnome-terminal", "--", "bash", "-c", NODE_RED_COMMAND])
         if self.launch_azure:    self.AZURE    = subprocess.Popen('func start', cwd=f'{PACKAGE_PATH}/AzureFunctions/', shell=True)
 
