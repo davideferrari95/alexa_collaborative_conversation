@@ -56,8 +56,8 @@ class SkillLauncher(Node):
         print("\nProgram Interrupted. Killing Opened Terminal...\n")
 
         # Kill Node-RED and ngrok
-        if self.launch_ngrok:    os.system('killall node-red')
-        if self.launch_node_red: os.system('killall ngrok')
+        if self.launch_ngrok:    os.system('killall ngrok')
+        if self.launch_node_red: os.system('killall node-red')
 
         # Wait for Azure Functions
         if self.launch_azure: self.AZURE.wait()

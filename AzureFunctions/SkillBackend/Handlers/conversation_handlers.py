@@ -21,10 +21,11 @@ class Provide_Object_API_Handler(AbstractRequestHandler):
 
         # Get API Arguments
         args = get_api_arguments(handler_input)
+        print(f'Provide_Object_API Arguments: {args}')
 
         # Check for `YesNo` Argument
-        if 'Object' in args.keys(): object = args['Object']
-        else: object = None
+        if 'object' in args.keys(): object = args['object']
+        else: object = 'None'
 
         logger.debug('Provide_Object_API Handler')
         print(f'Provide_Object_API Handler: {object}')

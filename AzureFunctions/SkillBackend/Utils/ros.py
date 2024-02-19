@@ -5,6 +5,7 @@ from rclpy.node import Node
 
 # Import Messages
 from alexa_conversation.msg import VoiceCommand
+NULL_COMMAND, GET_OBJECT = VoiceCommand.NULL_COMMAND, VoiceCommand.GET_OBJECT
 
 # Import Parent Folders
 from pathlib import Path
