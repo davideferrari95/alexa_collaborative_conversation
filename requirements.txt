@@ -6,7 +6,6 @@ ask-sdk-core
 ask-sdk-webservice-support
 
 # ROS
-rospy
 rospkg
 
 # Python
