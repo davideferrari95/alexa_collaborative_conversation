@@ -8,8 +8,8 @@ Package that allows communication between ROS and Alexa, implementing two differ
 ## Requirements
 
 - Ubuntu 20.04+
-- Python 3.10+
-- ROS Noetic+
+- Python 3.8.10
+- ROS Noetic
 - ROS-Bridge
 - Azure 4.0+
 - Node-RED

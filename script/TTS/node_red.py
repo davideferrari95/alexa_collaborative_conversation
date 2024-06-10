@@ -13,7 +13,7 @@ print()
 rospy.logwarn('TTS Initialized\n')
 
 # ROS Publishers
-tts_pub = rospy.Publisher('/tts', String, queue_size=1)
+tts_pub = rospy.Publisher('/alexa/tts', String, queue_size=1)
 time.sleep(1)
 
 if __name__ == '__main__':

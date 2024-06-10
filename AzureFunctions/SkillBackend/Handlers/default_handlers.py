@@ -48,6 +48,7 @@ class HelpIntentHandler(AbstractRequestHandler):
                 .response
         )
 
+
 class CancelOrStopIntentHandler(AbstractRequestHandler):
 
     """ Single Handler for Cancel and Stop Intent """
@@ -81,8 +82,8 @@ class FallbackIntentHandler(AbstractRequestHandler):
 
         # type: (HandlerInput) -> Response
         logging.info("In FallbackIntentHandler")
-        speech = "Hmm, I'm not sure. You can tell me give a tool or change orientation. What would you like to do?"
-        reprompt = "I didn't catch that. What can I help you with?"
+        speech = "Fallback Intent"
+        reprompt = "Fallback Intent Reprompt"
 
         return handler_input.response_builder.speak(speech).ask(reprompt).response
 

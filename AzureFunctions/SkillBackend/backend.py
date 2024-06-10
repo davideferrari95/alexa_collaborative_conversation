@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-import os, sys, json
+import os, sys, json, time
 import rospy, rospkg
+from threading import Thread
 
 # Azure Functions
 import azure.functions as func
@@ -18,10 +19,28 @@ from Handlers.default_handlers import *
 from Handlers.conversation_handlers import *
 
 # Import ROS Utilities
-from Utils.ros import *
+from Utils.ros import SkillNode
 
-# Setup Logging
-logging.debug('Skill Server Started')
+# Keep Alive Function
+def keep_alive():
+
+    """ Keep Skill Alive Function """
+
+    while not rospy.is_shutdown():
+
+        # Continue Loop if Keep Alive is False or Another Dialog is Running
+        if not SkillNode.KEEP_ALIVE or SkillNode.another_dialog: continue
+
+        # Publish Alive Command
+        SkillNode.alexa_keep_alive()
+        print('Keep Alive Call')
+
+        # Wait 12 Seconds
+        rospy.sleep(12)
+
+# Keep Alive Thread
+keep_alive_thread = Thread(target=keep_alive)
+keep_alive_thread.start()
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
 
@@ -35,7 +54,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     skill_builder = SkillBuilder()
     skill_builder.skill_id = os.environ["AlexaSkillID"]
 
-    # Register Default Handlers
+    # Register Default Handlers - Intents
     skill_builder.add_request_handler(LaunchRequestHandler())
     skill_builder.add_request_handler(HelpIntentHandler())
     skill_builder.add_request_handler(CancelOrStopIntentHandler())
@@ -50,15 +69,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     
     # Register Conversation Handlers
     skill_builder.add_request_handler(BeginExperiment_API_Handler())
-    skill_builder.add_request_handler(ObstacleDetected_ObjectMoved_API_Handler())
-    skill_builder.add_request_handler(PutObjectHere_API_Handler())
-    skill_builder.add_request_handler(ResumeMoving_API_Handler())
-    skill_builder.add_request_handler(WaitForCommand_API_Handler())
-    skill_builder.add_request_handler(MoveToUser_UserMovedBack_API_Handler())
-    skill_builder.add_request_handler(WaitForTime_API_Handler())
-    skill_builder.add_request_handler(Wait_API_Handler())
-    skill_builder.add_request_handler(HelpSpecialBlock_API_Handler())
-    skill_builder.add_request_handler(RobotStoppedScaling_API_Handler())
+    skill_builder.add_request_handler(AnotherDialog_API_Handler())
+    skill_builder.add_request_handler(Alive_API_Handler())
+    skill_builder.add_request_handler(Test_API_Handler())
 
     # Register Interceptors
     skill_builder.add_global_request_interceptor(LoggingRequestInterceptor())

@@ -17,11 +17,8 @@ launch_node_red = rospy.get_param('/skill_backend_launcher/launch_node_red', Fal
 rospack = rospkg.RosPack()
 path = rospack.get_path('alexa_conversation')
 
-# Set Path to ngrok
-NGROK_PATH = '/home/davide/Documenti/Programmi/ngrok/'
-
 # Launch Node-RED, ngrok and Azure in Separate Terminals
-if launch_ngrok:    NGROK    = subprocess.Popen('gnome-terminal -e "./ngrok http 7071"', cwd=f'{NGROK_PATH}', shell=True)
+if launch_ngrok:    NGROK    = subprocess.Popen('gnome-terminal -e "ngrok http 7071"', shell=True)
 if launch_node_red: NODE_RED = subprocess.Popen('gnome-terminal -- "node-red"', shell=True)
 if launch_azure:    AZURE    = subprocess.Popen('func start', cwd=f'{path}/AzureFunctions/', shell=True)
 
