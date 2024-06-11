@@ -6,6 +6,11 @@ https://github.com/alexa-samples/skill-sample-python-alexa-conversations-pet-mat
 https://blog.devandreacarratta.it/alexa-skill-endpoint-azure-function/
 https://developer.amazon.com/en-US/docs/alexa/conversations/about-alexa-conversations.html
 https://developer.amazon.com/en-US/docs/alexa/conversations/steps-to-create-skill.html
+https://developer.amazon.com/it-IT/docs/alexa/custom-skills/delegate-dialog-to-alexa.html
+
+## Alexa Conversations
+https://github.com/alexa-samples/alexa-conversations-pizza-reference-skill/blob/main/index.js
+https://github.com/alexa-samples/skill-sample-python-petmatch/blob/master/lambda/py/lambda_function.py
 
 ## Video Tutorial
 
