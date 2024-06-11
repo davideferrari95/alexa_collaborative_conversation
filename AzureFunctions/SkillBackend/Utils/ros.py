@@ -4,7 +4,7 @@ import rospy, time
 # Import Messages
 from std_msgs.msg import String, Bool
 from alexa_conversation.msg import VoiceCommand
-from Utils.command_list import AbstractCommand
+from Utils.command_list import Command
 
 class SkillServerNode():
 
@@ -39,7 +39,7 @@ class SkillServerNode():
         self.KEEP_ALIVE = msg.data
         print('\nKeep Alive Callback:', msg.data, '\n')
 
-    def send_command(self, command:AbstractCommand, wait_time=None):
+    def send_command(self, command:Command, wait_time=None):
 
         # Voice Command Message
         msg = VoiceCommand()
