@@ -10,7 +10,10 @@ from Utils.ros   import SkillNode
 from Utils.command_list import command_list
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
+
+# API Response Status
+SUCCESS, FAIL, DEFAULT = 'Success', 'Fail', 'Default'
 
 class BeginExperiment_API_Handler(AbstractRequestHandler):
 
@@ -24,25 +27,6 @@ class BeginExperiment_API_Handler(AbstractRequestHandler):
 
         # Publish ROS Message
         SkillNode.send_command(command_list.get_command_by_name('EXPERIMENT_START'))
-
-        return {
-            "apiResponse": {},
-            "shouldEndSession": True
-        }
-
-class Test_API_Handler(AbstractRequestHandler):
-
-    def can_handle(self, handler_input: HandlerInput):
-
-        return is_api_request(handler_input, 'Test_API')
-
-    def handle(self, handler_input: HandlerInput):
-
-        print('Test_API Handler')
-
-        # Publish ROS Message
-        SkillNode.send_command(command_list.get_command_by_name('MOVED_OBJECT'))
-        SkillNode.another_dialog = False
 
         return {
             "apiResponse": {},
@@ -81,3 +65,41 @@ class AnotherDialog_API_Handler(AbstractRequestHandler):
             "apiResponse": {},
             "shouldEndSession": False
         }
+
+class MovementDialogue_Direction_API_Handler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'MovementDialogue_Direction_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        print('MovementDialogue_Direction_API Handler')
+
+        # Publish ROS Message
+        # SkillNode.send_command(command_list.get_command_by_name('MOVED_OBJECT'))
+        # SkillNode.another_dialog = False
+
+        args = get_api_arguments(handler_input)
+        measure, distance, direction = args['measure'], args['distance'], args['direction']
+        print(f'Moving {direction} {distance} {measure}')
+
+        test = True
+        # test = False
+
+        if (test):
+
+            # Return Success API Response
+            return handler_input.response_builder.set_api_response({
+                    'status': SUCCESS,
+                    # 'status': DEFAULT,
+                    'string': 'Test Success Message'
+                }).set_should_end_session(False).response
+
+        else:
+
+            # Return Failed API Response
+            return handler_input.response_builder.set_api_response({
+                    'status': FAIL,
+                    'string': 'Test Failed Message'
+                }).set_should_end_session(True).response
