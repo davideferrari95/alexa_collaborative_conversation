@@ -20,6 +20,7 @@
 **Accept Movement Command:**
 
 - **Alexa**: "Okay, I will navigate to {location}" / "I will move to {location}" / "I will go there"
+- **API**: `goto {location}`
 
 **Reject Movement Command:**
 
@@ -32,6 +33,7 @@
 **Accept Movement Command:**
 
 - **Alexa**: "Okay, I will stop moving"
+- **API**: `stop`
 
 **Reject Movement Command:**
 
@@ -45,12 +47,14 @@
 **Accept Pickup Command:**
 
 - **Alexa**: "Okay, I will bring you the {object}" / "I will take you the {object}"
+- **API**: `pick {object} {from location}`
 
 **Extra Info Pickup Command:**
 
 - **Alexa**: "Where is the {object} located?"
 - **User**: "The {object} is located at {location}" / "There + {point-at-location}" / "It is at {location}"
 - **Alexa**: "Okay, I will bring you the {object} from {location}" / "I will take you the {object} from {location}"
+- **API**: `pick {object} {from location}`
 
 **Reject Pickup Command:**
 
@@ -65,12 +69,14 @@
 
 - **Alexa**: "Okay, I will bring {object} to {location}" / "I will take {object} to {location}"
 - **Alexa**: "Okay, I will move {object} from {location} to {location}"
+- **API**: `move_object {object} {from location} {to location}`
 
 **Extra Info Pickup Command:**
 
 - **Alexa**: "Where is the {object} located?"
 - **User**: "The {object} is located at {location}" / "There + {point-at-location}" / "It is at {location}"
 - **Alexa**: "Okay, I will bring {object} to {location} from {location}" / "I will take {object} to {location} from {location}"
+- **API**: `move_object {object} {from location} {to location}`
 
 **Reject Pickup Command:**
 
@@ -85,6 +91,7 @@
 **Accept Task Command:**
 
 - **Alexa**: "Okay, I will execute task {task-name}" / "I will perform task {task-name}" / "I will run task {task-name}"
+**API**: `execute_task {task name}`
 
 **Reject Task Command:**
 
