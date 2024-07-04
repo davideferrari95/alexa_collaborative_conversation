@@ -5,15 +5,12 @@ from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.handler_input import HandlerInput
 
 # Import Utilities
-from Utils.utils import is_api_request, get_api_arguments
+from Utils.utils import is_api_request, get_api_arguments, custom_API_response
 from Utils.ros   import SkillNode
-from Utils.command_list import command_list
+from Utils.command_list import *
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-
-# API Response Status
-SUCCESS, FAIL, DEFAULT = 'Success', 'Fail', 'Default'
 
 class BeginExperiment_API_Handler(AbstractRequestHandler):
 
@@ -66,40 +63,53 @@ class AnotherDialog_API_Handler(AbstractRequestHandler):
             "shouldEndSession": False
         }
 
-class MovementDialogue_Direction_API_Handler(AbstractRequestHandler):
+class MoveDirection_API_Handler(AbstractRequestHandler):
 
     def can_handle(self, handler_input: HandlerInput):
 
-        return is_api_request(handler_input, 'MovementDialogue_Direction_API')
+        return is_api_request(handler_input, 'MoveDirection_API')
 
     def handle(self, handler_input: HandlerInput):
 
-        print('MovementDialogue_Direction_API Handler')
+        print('MoveDirection_API Handler - Move API')
 
-        # Publish ROS Message
-        # SkillNode.send_command(command_list.get_command_by_name('MOVED_OBJECT'))
-        # SkillNode.another_dialog = False
-
+        # Get Arguments from API Request
         args = get_api_arguments(handler_input)
         measure, distance, direction = args['measure'], args['distance'], args['direction']
         print(f'Moving {direction} {distance} {measure}')
 
-        test = True
-        # test = False
+        # Get Command
+        command:MoveCommand = command_list.get_command_by_name('MOVE_DIRECTION')
 
-        if (test):
+        # Update Command
+        command.setDirection(direction)
+        command.setDistance(distance)
+        command.setMeasure(measure)
 
-            # Return Success API Response
-            return handler_input.response_builder.set_api_response({
-                    'status': SUCCESS,
-                    # 'status': DEFAULT,
-                    'string': 'Test Success Message'
-                }).set_should_end_session(False).response
+        # Return API Response
+        custom_API_response(handler_input, command, 'Moving ' + direction + ' ' + distance + ' ' + measure)
 
-        else:
+class GoTo_API_Handler(AbstractRequestHandler):
 
-            # Return Failed API Response
-            return handler_input.response_builder.set_api_response({
-                    'status': FAIL,
-                    'string': 'Test Failed Message'
-                }).set_should_end_session(True).response
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'GoTo_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        print('GoTo_API Handler - GoTo API')
+
+        # Get Arguments from API Request
+        args = get_api_arguments(handler_input)
+        location = args['location']
+        print(f'GoTo {location}')
+
+        # Get Command
+        command:MoveCommand = command_list.get_command_by_name('MOVE_GOTO')
+
+        # Update Command
+        command.setLocation(location)
+
+        # Return API Response
+        custom_API_response(handler_input, command, 'GoTo ' + location)
+
