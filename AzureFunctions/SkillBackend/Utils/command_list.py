@@ -115,7 +115,7 @@ class CommandList(List[Command]):
     def add_command(self, name: str, ID: int, type: str, info: str, *args):
 
         # Check Command Type -> Null, Default, ROS Command
-        if type in [NULL, ROS, DEFAULT]: command = Command(name, ID, type, info)
+        if type in [NULL, ROS, DEFAULT, STOP]: command = Command(name, ID, type, info)
 
         # Move Command
         elif type == MOVE:
@@ -192,4 +192,6 @@ command_list.add_command('NULL',             0, NULL,     'No Command')
 command_list.add_command('EXPERIMENT_START', 1, ROS,      'Start the Experiment')
 command_list.add_command('MOVE_DIRECTION',   2, MOVE,     'Move to a Direction',)
 command_list.add_command('MOVE_GOTO',        3, MOVE,     'GoTo a Location',)
-command_list.add_command('PICK_OBJECT',      4, PICK,     'Pick Up Object')
+command_list.add_command('STOP',             4, STOP,     'Stop the Robot')
+
+command_list.add_command('PICK_OBJECT',      5, PICK,     'Pick Up Object')

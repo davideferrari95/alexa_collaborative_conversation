@@ -111,5 +111,21 @@ class GoTo_API_Handler(AbstractRequestHandler):
         command.setLocation(location)
 
         # Return API Response
-        custom_API_response(handler_input, command, 'GoTo ' + location)
+        custom_API_response(handler_input, command, "I'm going to " + location)
+
+class Stop_API_Handler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'Stop_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        print('Stop_API Handler - Stop API')
+
+        # Get Command
+        command:Command = command_list.get_command_by_name('STOP')
+
+        # Return API Response
+        custom_API_response(handler_input, command, 'Stopping...')
 
