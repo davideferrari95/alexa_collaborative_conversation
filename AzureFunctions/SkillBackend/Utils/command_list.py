@@ -203,6 +203,45 @@ class CommandList(List[Command]):
                 object_name, location = args
                 command = PickCommand(name, ID, info, object_name, location)
 
+        # Move Object Command
+        elif type == MOVE_OBJECT:
+
+            # Check Arguments
+            if len(args) != 3:
+
+                # Create Empty Move Object Command
+                command = MoveObjectCommand(name, ID, info)
+
+                # raise ValueError('MOVE_OBJECT command requires object_name, from_location, and to_location')
+
+            else:
+
+                # Create Move Object Command
+                object_name, from_location, to_location = args
+                command = MoveObjectCommand(name, ID, info, object_name, from_location, to_location)
+
+        # Execute Task Command
+        elif type == EXECUTE_TASK:
+
+            # Check Arguments
+            if len(args) != 1:
+
+                # Create Empty Execute Task Command
+                command = ExecuteTaskCommand(name, ID, info)
+
+                # raise ValueError('EXECUTE_TASK command requires task_name')
+
+            else:
+
+                # Create Execute Task Command
+                task_name = args[0]
+                command = ExecuteTaskCommand(name, ID, info, task_name)
+
+        else:
+
+            # Invalid Command Type
+            raise ValueError(f'Invalid Command Type: {type}')
+
         # Add Command to the List
         self.append(command)
 
