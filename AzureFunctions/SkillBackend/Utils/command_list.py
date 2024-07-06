@@ -100,6 +100,35 @@ class PickCommand(Command):
     def getObjectName(self): return self.object_name
     def getLocation(self):   return self.location
 
+class MoveObjectCommand(Command):
+
+    """ Move Object Command Class """
+
+    def __init__(self, name:str, ID:int, info:str, object_name:str='null', from_location:str='null', to_location:str='null'):
+
+        # Initialize Basic Command
+        super().__init__(name, ID, MOVE_OBJECT, info)
+
+        # Save Move Object Information
+        self.object_name   = object_name
+        self.from_location = from_location
+        self.to_location   = to_location
+
+    def __str__(self):
+
+        # Return Move Object Information
+        return f'{super().__str__()} - Object: {self.object_name}, From Location: {self.from_location}, To Location: {self.to_location}'
+
+    # Move Object Information Setters
+    def setObjectName(self, object_name):     self.object_name   = object_name
+    def setFromLocation(self, from_location): self.from_location = from_location
+    def setToLocation(self, to_location):     self.to_location   = to_location
+
+    # Move Object Information Getters
+    def getObjectName(self):   return self.object_name
+    def getFromLocation(self): return self.from_location
+    def getToLocation(self):   return self.to_location
+
 class CommandList(List[Command]):
 
     def __init__(self):
@@ -188,10 +217,10 @@ class CommandList(List[Command]):
 command_list = CommandList()
 
 # Add Commands
-command_list.add_command('NULL',             0, NULL,     'No Command')
-command_list.add_command('EXPERIMENT_START', 1, ROS,      'Start the Experiment')
-command_list.add_command('MOVE_DIRECTION',   2, MOVE,     'Move to a Direction',)
-command_list.add_command('MOVE_GOTO',        3, MOVE,     'GoTo a Location',)
-command_list.add_command('STOP',             4, STOP,     'Stop the Robot')
-
-command_list.add_command('PICK_OBJECT',      5, PICK,     'Pick Up Object')
+command_list.add_command('NULL',             0, NULL,        'No Command')
+command_list.add_command('EXPERIMENT_START', 1, ROS,         'Start the Experiment')
+command_list.add_command('MOVE_DIRECTION',   2, MOVE,        'Move to a Direction',)
+command_list.add_command('MOVE_GOTO',        3, MOVE,        'GoTo a Location',)
+command_list.add_command('STOP',             4, STOP,        'Stop the Robot')
+command_list.add_command('PICK_OBJECT',      5, PICK,        'Pick Up Object')
+command_list.add_command('MOVE_OBJECT',      6, MOVE_OBJECT, 'Move Object from Location to Location')

@@ -86,8 +86,14 @@ class MoveDirection_API_Handler(AbstractRequestHandler):
         command.setDistance(distance)
         command.setMeasure(measure)
 
+        # Check Feasibility and Get Response
+        success, response = custom_API_response(handler_input, command, 'Moving ' + direction + ' ' + distance + ' ' + measure)
+
+        # Publish ROS Message
+        if success: SkillNode.send_command(command)
+
         # Return API Response
-        custom_API_response(handler_input, command, 'Moving ' + direction + ' ' + distance + ' ' + measure)
+        return response
 
 class GoTo_API_Handler(AbstractRequestHandler):
 
@@ -111,7 +117,13 @@ class GoTo_API_Handler(AbstractRequestHandler):
         command.setLocation(location)
 
         # Return API Response
-        custom_API_response(handler_input, command, "I'm going to " + location)
+        success, response = custom_API_response(handler_input, command, "I'm going to " + location)
+
+       # Publish ROS Message
+        if success: SkillNode.send_command(command)
+
+        # Return API Response
+        return response
 
 class Stop_API_Handler(AbstractRequestHandler):
 
@@ -127,5 +139,73 @@ class Stop_API_Handler(AbstractRequestHandler):
         command:Command = command_list.get_command_by_name('STOP')
 
         # Return API Response
-        custom_API_response(handler_input, command, 'Stopping...')
+        success, response = custom_API_response(handler_input, command, 'Stopping...')
 
+       # Publish ROS Message
+        if success: SkillNode.send_command(command)
+
+        # Return API Response
+        return response
+
+class PickObject_API_Handler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'PickObject_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        print('PickObject_API Handler - PickObject API')
+
+        # Get Arguments from API Request
+        args = get_api_arguments(handler_input)
+        object, location = args['object'], args['location']
+        print(f'Pick {object} from {location}')
+
+        # Get Command
+        command:PickCommand = command_list.get_command_by_name('PICK_OBJECT')
+
+        # Update Command
+        command.setObjectName(object)
+        command.setLocation(location)
+
+        # Return API Response
+        success, response = custom_API_response(handler_input, command, f'I pick {object} from {location}')
+
+       # Publish ROS Message
+        if success: SkillNode.send_command(command)
+
+        # Return API Response
+        return response
+
+class MoveObject_API_Handler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'MoveObject_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        print('MoveObject_API Handler - MoveObject API')
+
+        # Get Arguments from API Request
+        args = get_api_arguments(handler_input)
+        object, from_location, to_location = args['object'], args['from_location'], args['to_location']
+        print(f'Move {object} from {from_location} to {to_location}')
+
+        # Get Command
+        command:MoveObjectCommand = command_list.get_command_by_name('MOVE_OBJECT')
+
+        # Update Command
+        command.setObjectName(object)
+        command.setFromLocation(from_location)
+        command.setToLocation(to_location)
+
+        # Return API Response
+        success, response = custom_API_response(handler_input, command, f'I move {object} from {from_location} to {to_location}')
+
+       # Publish ROS Message
+        if success: SkillNode.send_command(command)
+
+        # Return API Response
+        return response

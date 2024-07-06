@@ -3,6 +3,7 @@ import logging, requests
 # Import Ask SDK
 import ask_sdk_core.utils as ask_utils
 from ask_sdk_core.handler_input import HandlerInput
+from ask_sdk_model.response import Response
 
 # Import Utilities
 from Utils.command_list import *
@@ -12,7 +13,7 @@ from typing import Union, Tuple
 # API Response Status
 SUCCESS, FAIL, DEFAULT = 'Success', 'Fail', 'Default'
 
-def is_api_request(handler_input, api_name):
+def is_api_request(handler_input:HandlerInput, api_name):
 
     """ Helper method to check if the incoming request is an API request. """
 
@@ -21,7 +22,7 @@ def is_api_request(handler_input, api_name):
         logging.error(ex)
         return False
 
-def get_api_arguments(handler_input):
+def get_api_arguments(handler_input:HandlerInput):
 
     """Helper method to get API arguments from the request envelope."""
 
@@ -30,7 +31,7 @@ def get_api_arguments(handler_input):
         logging.error('Error occurred: ', ex)
         return False
 
-def get_slots(handler_input):
+def get_slots(handler_input:HandlerInput):
 
     """ Helper method to get slots from the request envelope. """
 
@@ -52,7 +53,9 @@ def setup_logging():
 
     return logger
 
-def custom_API_response(handler_input: HandlerInput, command:Command, success_string:str, fail_string:str='Action not feasible'):
+def custom_API_response(handler_input:HandlerInput, command:Command, success_string:str, fail_string:str='Action not feasible') -> Tuple[bool, Response]:
+
+    """ Helper method to send a custom API response. """
 
     # Check Action Feasibility
     feasibility = check_action_feasibility(command)
@@ -63,7 +66,7 @@ def custom_API_response(handler_input: HandlerInput, command:Command, success_st
         SkillNode.send_command(command)
 
         # Return Success API Response
-        return handler_input.response_builder.set_api_response({
+        return True, handler_input.response_builder.set_api_response({
                 'status': SUCCESS,
                 'string': success_string
             }).set_should_end_session(True).response
@@ -71,7 +74,7 @@ def custom_API_response(handler_input: HandlerInput, command:Command, success_st
     elif isinstance(feasibility, bool) and not feasibility:
 
         # Return Failed API Response
-        return handler_input.response_builder.set_api_response({
+        return False, handler_input.response_builder.set_api_response({
                 'status': FAIL,
                 'string': fail_string
             }).set_should_end_session(True).response
@@ -83,13 +86,13 @@ def custom_API_response(handler_input: HandlerInput, command:Command, success_st
         except: _, solution = False, 'Unknown Error'
 
         # Return Failed API Response + Solution
-        return handler_input.response_builder.set_api_response({
+        return False, handler_input.response_builder.set_api_response({
                 'status': FAIL,
                 'string': fail_string + ': ' + solution,
             }).set_should_end_session(False).response
 
 
-def check_action_feasibility(command:Union[Command, PickCommand, MoveCommand]) -> Union[bool, Tuple[bool, str]]:
+def check_action_feasibility(command:Union[Command, PickCommand, MoveCommand, MoveObjectCommand]) -> Union[bool, Tuple[bool, str]]:
 
     """ Helper method to check if the action is feasible. """
 
@@ -130,6 +133,15 @@ def check_action_feasibility(command:Union[Command, PickCommand, MoveCommand]) -
         payload.update({
             'object_name': command.object_name,
             'location'   : command.location
+        })
+
+    elif command.getType() == MOVE_OBJECT:
+
+        # Add Move Object Information to the Payload
+        payload.update({
+            'object_name'  : command.object_name,
+            'from_location': command.from_location,
+            'to_location'  : command.to_location
         })
 
     print(f"Checking action feasibility: {payload}")

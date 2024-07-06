@@ -74,6 +74,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     skill_builder.add_request_handler(MoveDirection_API_Handler())
     skill_builder.add_request_handler(GoTo_API_Handler())
     skill_builder.add_request_handler(Stop_API_Handler())
+    skill_builder.add_request_handler(PickObject_API_Handler())
+    skill_builder.add_request_handler(MoveObject_API_Handler())
 
     # Register Interceptors
     skill_builder.add_global_request_interceptor(LoggingRequestInterceptor())
