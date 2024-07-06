@@ -209,3 +209,33 @@ class MoveObject_API_Handler(AbstractRequestHandler):
 
         # Return API Response
         return response
+
+class ExecuteTask_API_Handler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input: HandlerInput):
+
+        return is_api_request(handler_input, 'ExecuteTask_API')
+
+    def handle(self, handler_input: HandlerInput):
+
+        print('ExecuteTask_API Handler - ExecuteTask API')
+
+        # Get Arguments from API Request
+        args = get_api_arguments(handler_input)
+        task_name = args['task_name']
+        print(f'Execute Task {task_name}')
+
+        # Get Command
+        command:ExecuteTaskCommand = command_list.get_command_by_name('MOVE_OBJECT')
+
+        # Update Command
+        command.setTaskName(task_name)
+
+        # Return API Response
+        success, response = custom_API_response(handler_input, command, f'Execute Task {task_name}')
+
+       # Publish ROS Message
+        if success: SkillNode.send_command(command)
+
+        # Return API Response
+        return response

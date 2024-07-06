@@ -129,6 +129,29 @@ class MoveObjectCommand(Command):
     def getFromLocation(self): return self.from_location
     def getToLocation(self):   return self.to_location
 
+class ExecuteTaskCommand(Command):
+
+    """ Execute Task Command Class """
+
+    def __init__(self, name:str, ID:int, info:str, task_name:str='null'):
+
+        # Initialize Basic Command
+        super().__init__(name, ID, EXECUTE_TASK, info)
+
+        # Save Execute Task Information
+        self.task_name = task_name
+
+    def __str__(self):
+
+        # Return Execute Task Information
+        return f'{super().__str__()} - Execute Task: {self.task_name}'
+
+    # Execute Task Information Setters
+    def setTaskName(self, task_name): self.task_name = task_name
+
+    # Execute Task Information Getters
+    def getTaskName(self): return self.task_name
+
 class CommandList(List[Command]):
 
     def __init__(self):
@@ -224,3 +247,4 @@ command_list.add_command('MOVE_GOTO',        3, MOVE,        'GoTo a Location',)
 command_list.add_command('STOP',             4, STOP,        'Stop the Robot')
 command_list.add_command('PICK_OBJECT',      5, PICK,        'Pick Up Object')
 command_list.add_command('MOVE_OBJECT',      6, MOVE_OBJECT, 'Move Object from Location to Location')
+command_list.add_command('EXECUTE_TASK',     7, EXECUTE_TASK,'Execute Task')

@@ -40,7 +40,7 @@ class SkillServerNode():
         self.KEEP_ALIVE = msg.data
         print('\nKeep Alive Callback:', msg.data, '\n')
 
-    def send_command(self, command:Union[Command, PickCommand, MoveCommand, MoveObjectCommand]):
+    def send_command(self, command:Union[Command, PickCommand, MoveCommand, MoveObjectCommand, ExecuteTaskCommand]):
 
         """ Send Command to ROS """
 
@@ -84,7 +84,7 @@ class SkillServerNode():
         elif command.getType() == EXECUTE_TASK:
 
             # Add Task Information
-            msg.execute_task_command.task_name = command.getTask()
+            msg.execute_task_command.task_name = command.getTaskName()
 
         self.command_pub.publish(msg)
 

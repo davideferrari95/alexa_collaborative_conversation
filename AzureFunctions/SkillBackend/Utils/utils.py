@@ -92,7 +92,7 @@ def custom_API_response(handler_input:HandlerInput, command:Command, success_str
             }).set_should_end_session(False).response
 
 
-def check_action_feasibility(command:Union[Command, PickCommand, MoveCommand, MoveObjectCommand]) -> Union[bool, Tuple[bool, str]]:
+def check_action_feasibility(command:Union[Command, PickCommand, MoveCommand, MoveObjectCommand, ExecuteTaskCommand]) -> Union[bool, Tuple[bool, str]]:
 
     """ Helper method to check if the action is feasible. """
 
@@ -143,6 +143,13 @@ def check_action_feasibility(command:Union[Command, PickCommand, MoveCommand, Mo
             'from_location': command.from_location,
             'to_location'  : command.to_location
         })
+
+    elif command.getType() == EXECUTE_TASK:
+
+            # Add Task Information to the Payload
+            payload.update({
+                'task_name': command.task_name
+            })
 
     print(f"Checking action feasibility: {payload}")
 
