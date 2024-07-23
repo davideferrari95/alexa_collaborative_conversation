@@ -1,4 +1,4 @@
-import logging, requests, inspect
+import logging, requests
 
 # Import Ask SDK
 import ask_sdk_core.utils as ask_utils
@@ -12,17 +12,6 @@ from typing import Union, Tuple
 
 # API Response Status
 SUCCESS, FAIL, DEFAULT = 'Success', 'Fail', 'Default'
-
-def print_line():
-
-    """ Helper method to print the current line number. """
-
-    # Get Current Frame
-    frame = inspect.currentframe()
-    line_number = frame.f_lineno
-
-    # Print Line Number
-    print(f"Current Line: {line_number}")
 
 def is_api_request(handler_input:HandlerInput, api_name):
 
@@ -104,7 +93,6 @@ def custom_API_response(handler_input:HandlerInput, command:Command, success_str
                 'status': FAIL,
                 'string': fail_string + ': ' + solution,
             }).set_should_end_session(False).response
-
 
 def check_action_feasibility(command:Union[Command, PickCommand, MoveCommand, MoveObjectCommand, ExecuteTaskCommand]) -> Union[bool, Tuple[bool, str]]:
 
