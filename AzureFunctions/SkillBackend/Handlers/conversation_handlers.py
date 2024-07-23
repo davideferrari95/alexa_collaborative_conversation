@@ -160,18 +160,26 @@ class PickObject_API_Handler(AbstractRequestHandler):
 
         # Get Arguments from API Request
         args = get_api_arguments(handler_input)
-        object, location = args['object'], args['location']
-        print(f'Pick {object} from {location}')
+
+        if 'location' in args and args['location'] not in ['null', 'chimera']:
+
+            object, location = args['object'], args['location']
+            print(f'Pick {object} from {location}')
+
+        else:
+
+            object, location  = args['object'], 'null'
+            print(f'Pick {object}')
 
         # Get Command
         command:PickCommand = command_list.get_command_by_name('PICK_OBJECT')
 
         # Update Command
         command.setObjectName(object)
-        command.setLocation(location)
+        if location != 'null': command.setLocation(location)
 
         # Return API Response
-        success, response = custom_API_response(handler_input, command, f'I pick {object} from {location}')
+        success, response = custom_API_response(handler_input, command, f'I pick the {object} from {location}' if location != 'null' else f'I pick the {object}')
 
        # Publish ROS Message
         if success: SkillNode.send_command(command)
@@ -191,8 +199,16 @@ class MoveObject_API_Handler(AbstractRequestHandler):
 
         # Get Arguments from API Request
         args = get_api_arguments(handler_input)
-        object, from_location, to_location = args['object'], args['from_location'], args['to_location']
-        print(f'Move {object} from {from_location} to {to_location}')
+
+        if 'from_location' in args and args['from_location'] not in ['null', 'chimera']:
+
+            object, from_location, to_location = args['object'], args['from_location'], args['to_location']
+            print(f'Move {object} from {from_location} to {to_location}')
+
+        else:
+
+            object, from_location, to_location = args['object'], 'null', args['to_location']
+            print(f'Move {object} to {to_location}')
 
         # Get Command
         command:MoveObjectCommand = command_list.get_command_by_name('MOVE_OBJECT')
@@ -227,7 +243,7 @@ class ExecuteTask_API_Handler(AbstractRequestHandler):
         print(f'Execute Task {task_name}')
 
         # Get Command
-        command:ExecuteTaskCommand = command_list.get_command_by_name('MOVE_OBJECT')
+        command:ExecuteTaskCommand = command_list.get_command_by_name('EXECUTE_TASK')
 
         # Update Command
         command.setTaskName(task_name)
