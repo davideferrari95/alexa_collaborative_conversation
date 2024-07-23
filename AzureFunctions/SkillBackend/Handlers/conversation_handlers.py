@@ -83,11 +83,12 @@ class MoveDirection_API_Handler(AbstractRequestHandler):
 
         # Update Command
         command.setDirection(direction)
-        command.setDistance(distance)
+        command.setDistance(float(distance))
         command.setMeasure(measure)
 
-        # Check Feasibility and Get Response
-        success, response = custom_API_response(handler_input, command, 'Moving ' + direction + ' ' + distance + ' ' + measure)
+        # Return API Response
+        success, response = custom_API_response(handler_input, command, f'Moving {direction} {distance} {measure}')
+        print(success, response)
 
         # Publish ROS Message
         if success: SkillNode.send_command(command)
@@ -117,7 +118,7 @@ class GoTo_API_Handler(AbstractRequestHandler):
         command.setLocation(location)
 
         # Return API Response
-        success, response = custom_API_response(handler_input, command, "I'm going to " + location)
+        success, response = custom_API_response(handler_input, command, f"I'm going to {location}")
 
        # Publish ROS Message
         if success: SkillNode.send_command(command)
