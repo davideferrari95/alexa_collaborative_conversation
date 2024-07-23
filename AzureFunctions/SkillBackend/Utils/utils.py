@@ -1,4 +1,4 @@
-import logging, requests
+import logging, requests, inspect
 
 # Import Ask SDK
 import ask_sdk_core.utils as ask_utils
@@ -12,6 +12,17 @@ from typing import Union, Tuple
 
 # API Response Status
 SUCCESS, FAIL, DEFAULT = 'Success', 'Fail', 'Default'
+
+def print_line():
+
+    """ Helper method to print the current line number. """
+
+    # Get Current Frame
+    frame = inspect.currentframe()
+    line_number = frame.f_lineno
+
+    # Print Line Number
+    print(f"Current Line: {line_number}")
 
 def is_api_request(handler_input:HandlerInput, api_name):
 
@@ -56,6 +67,9 @@ def setup_logging():
 def custom_API_response(handler_input:HandlerInput, command:Command, success_string:str, fail_string:str='Action not feasible') -> Tuple[bool, Response]:
 
     """ Helper method to send a custom API response. """
+
+    # Debug Print
+    print(f"Custom API Response: {command.getName()}")
 
     # Check Action Feasibility
     feasibility = check_action_feasibility(command)

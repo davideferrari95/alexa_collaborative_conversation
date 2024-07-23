@@ -33,7 +33,7 @@ class Command():
 
     def __str__(self):
 
-        return f'{self.name} ({self.ID})'
+        return f'Name: {self.name} | Type: {self.type} | ID: {self.ID} | Info: {self.info}'
 
     # Command Information Getters
     def getName(self): return self.name
@@ -63,10 +63,10 @@ class MoveCommand(Command):
         else: return f'{super().__str__()} - Distance: {self.distance}, Direction: {self.direction}, Measure: {self.measure}'
 
     # Move Information Setters
-    def setDirection(self, direction): self.direction = direction
-    def setDistance(self, distance):   self.distance  = distance
-    def setMeasure(self, measure):     self.measure   = measure
-    def setLocation(self, location):   self.location  = location
+    def setDirection(self, direction:str): self.direction = direction
+    def setDistance(self, distance:float): self.distance  = distance
+    def setMeasure(self, measure:str):     self.measure   = measure
+    def setLocation(self, location:str):   self.location  = location
 
     # Move Information Getters
     def getDirection(self): return self.direction
@@ -93,8 +93,8 @@ class PickCommand(Command):
         return f'{super().__str__()} - Object: {self.object_name}, Location: {self.location}'
 
     # Pick Information Setters
-    def setObjectName(self, object_name): self.object_name = object_name
-    def setLocation(self, location):      self.location    = location
+    def setObjectName(self, object_name:str): self.object_name = object_name
+    def setLocation(self, location:str):      self.location    = location
 
     # Pick Information Getters
     def getObjectName(self): return self.object_name
@@ -120,9 +120,9 @@ class MoveObjectCommand(Command):
         return f'{super().__str__()} - Object: {self.object_name}, From Location: {self.from_location}, To Location: {self.to_location}'
 
     # Move Object Information Setters
-    def setObjectName(self, object_name):     self.object_name   = object_name
-    def setFromLocation(self, from_location): self.from_location = from_location
-    def setToLocation(self, to_location):     self.to_location   = to_location
+    def setObjectName(self, object_name:str):     self.object_name   = object_name
+    def setFromLocation(self, from_location:str): self.from_location = from_location
+    def setToLocation(self, to_location:str):     self.to_location   = to_location
 
     # Move Object Information Getters
     def getObjectName(self):   return self.object_name
@@ -147,7 +147,7 @@ class ExecuteTaskCommand(Command):
         return f'{super().__str__()} - Execute Task: {self.task_name}'
 
     # Execute Task Information Setters
-    def setTaskName(self, task_name): self.task_name = task_name
+    def setTaskName(self, task_name:str): self.task_name = task_name
 
     # Execute Task Information Getters
     def getTaskName(self): return self.task_name
@@ -160,8 +160,8 @@ class CommandList(List[Command]):
         super().__init__()
 
     # Get Command by ID or Name
-    def get_command_by_id(self, command_id): return next((command for command in self if command.getID() == command_id), None)
-    def get_command_by_name(self, command_name): return next((command for command in self if command.getName() == command_name), None)
+    def get_command_by_id(self, command_id:int): return next((command for command in self if command.getID() == command_id), None)
+    def get_command_by_name(self, command_name:str): return next((command for command in self if command.getName() == command_name), None)
 
     # Add New Command
     def add_command(self, name: str, ID: int, type: str, info: str, *args):
@@ -245,16 +245,7 @@ class CommandList(List[Command]):
         # Add Command to the List
         self.append(command)
 
-    # Add New Command
-    def add_command(self, name:str, ID:int, type:str, info:str):
-
-        # Create New Command
-        command = Command(name, ID, type, info)
-
-        # Add Command to the List
-        self.append(command)
-
-    def delete_command_by_id(self, command_id):
+    def delete_command_by_id(self, command_id:int):
 
         # Find Command by ID
         command = self.get_command_by_id(command_id)
@@ -262,7 +253,7 @@ class CommandList(List[Command]):
         # Remove Command from the List
         if command: self.remove(command)
 
-    def delete_command_by_name(self, command_name):
+    def delete_command_by_name(self, command_name:str):
 
         # Find Command by Name
         command = self.get_command_by_name(command_name)
