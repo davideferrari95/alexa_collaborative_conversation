@@ -1,5 +1,5 @@
 # Move Command
 string direction
-string distance
-float64 measure
+float64 distance
+string measure
 string location
