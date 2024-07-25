@@ -1,4 +1,10 @@
-from typing import List
+from typing import List, Optional, Union
+
+# Import ROS Messages
+from alexa_conversation.msg import MoveCommand as MoveCommandMsg
+from alexa_conversation.msg import PickCommand as PickCommandMsg
+from alexa_conversation.msg import MoveObjectCommand as MoveObjectCommandMsg
+from alexa_conversation.msg import ExecuteTaskCommand as ExecuteTaskCommandMsg
 
 # Command Types Macro
 NULL    = 'NULL'
@@ -35,6 +41,8 @@ class Command():
 
         return f'Name: {self.name} | Type: {self.type} | ID: {self.ID} | Info: {self.info}'
 
+    def fill(self): pass
+
     # Command Information Getters
     def getName(self) -> str: return self.name
     def getID(self)   -> str: return self.ID
@@ -59,8 +67,16 @@ class MoveCommand(Command):
     def __str__(self):
 
         # Return Move Information
-        if self.location != 'null': return f'{super().__str__()} - Location: {self.location}'
+        if self.location not in ['null', 'chimera', '']: return f'{super().__str__()} - Location: {self.location}'
         else: return f'{super().__str__()} - Distance: {self.distance}, Direction: {self.direction}, Measure: {self.measure}'
+
+    def fill(self, move_command:MoveCommandMsg):
+
+        # Fill Move Information
+        self.setDirection(move_command.direction)
+        self.setDistance(move_command.distance)
+        self.setMeasure(move_command.measure)
+        self.setLocation(move_command.location)
 
     # Move Information Setters
     def setDirection(self, direction:str): self.direction = direction
@@ -92,6 +108,12 @@ class PickCommand(Command):
         # Return Pick Information
         return f'{super().__str__()} - Object: {self.object_name}, Location: {self.location}'
 
+    def fill(self, pick_command:PickCommandMsg):
+
+        # Fill Pick Information
+        self.setObjectName(pick_command.object_name)
+        self.setLocation(pick_command.location)
+
     # Pick Information Setters
     def setObjectName(self, object_name:str): self.object_name = object_name
     def setLocation(self, location:str):      self.location    = location
@@ -118,6 +140,13 @@ class MoveObjectCommand(Command):
 
         # Return Move Object Information
         return f'{super().__str__()} - Object: {self.object_name}, From Location: {self.from_location}, To Location: {self.to_location}'
+
+    def fill(self, move_object_command:MoveObjectCommandMsg):
+
+        # Fill Move Object Information
+        self.setObjectName(move_object_command.object_name)
+        self.setFromLocation(move_object_command.from_location)
+        self.setToLocation(move_object_command.to_location)
 
     # Move Object Information Setters
     def setObjectName(self, object_name:str):     self.object_name   = object_name
@@ -146,6 +175,11 @@ class ExecuteTaskCommand(Command):
         # Return Execute Task Information
         return f'{super().__str__()} - Execute Task: {self.task_name}'
 
+    def fill(self, execute_task_command:ExecuteTaskCommandMsg):
+
+        # Fill Execute Task Information
+        self.setTaskName(execute_task_command.task_name)
+
     # Execute Task Information Setters
     def setTaskName(self, task_name:str): self.task_name = task_name
 
@@ -154,14 +188,17 @@ class ExecuteTaskCommand(Command):
 
 class CommandList(List[Command]):
 
+    # Command Union Type
+    CommandUnion = Union[Command, PickCommand, MoveCommand, MoveObjectCommand, ExecuteTaskCommand]
+
     def __init__(self):
 
         # Initialize the List
         super().__init__()
 
     # Get Command by ID or Name
-    def get_command_by_id(self, command_id:int): return next((command for command in self if command.getID() == command_id), None)
-    def get_command_by_name(self, command_name:str): return next((command for command in self if command.getName() == command_name), None)
+    def get_command_by_id(self, command_id:int) -> Optional[CommandUnion]: return next((command for command in self if command.getID() == command_id), None)
+    def get_command_by_name(self, command_name:str) -> Optional[CommandUnion]: return next((command for command in self if command.getName() == command_name), None)
 
     # Add New Command
     def add_command(self, name: str, ID: int, type: str, info: str, *args):
