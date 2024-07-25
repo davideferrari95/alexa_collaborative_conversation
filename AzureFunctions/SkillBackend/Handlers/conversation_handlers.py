@@ -6,8 +6,8 @@ from ask_sdk_core.handler_input import HandlerInput
 
 # Import Utilities
 from Utils.utils import is_api_request, get_api_arguments, custom_API_response
-from Utils.ros   import SkillNode
 from Utils.command_list import *
+# from Utils.ros   import SkillNode
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -23,7 +23,7 @@ class BeginExperiment_API_Handler(AbstractRequestHandler):
         print('BeginExperiment_API Handler')
 
         # Publish ROS Message
-        SkillNode.send_command(command_list.get_command_by_name('EXPERIMENT_START'))
+        # SkillNode.send_command(command_list.get_command_by_name('EXPERIMENT_START'))
 
         return {
             "apiResponse": {},
@@ -39,7 +39,7 @@ class Alive_API_Handler(AbstractRequestHandler):
     def handle(self, handler_input: HandlerInput):
 
         print('Alive_API Handler')
-        SkillNode.alive_sended = True
+        # SkillNode.alive_sended = True
 
         return {
             "apiResponse": {},
@@ -56,7 +56,7 @@ class AnotherDialog_API_Handler(AbstractRequestHandler):
     def handle(self, handler_input: HandlerInput):
 
         print('AnotherDialog_API Handler')
-        SkillNode.another_dialog = True
+        # SkillNode.another_dialog = True
 
         return {
             "apiResponse": {},
@@ -88,10 +88,6 @@ class MoveDirection_API_Handler(AbstractRequestHandler):
 
         # Return API Response
         success, response = custom_API_response(handler_input, command, f'Moving {direction} {distance} {measure}')
-        print(success, response)
-
-        # Publish ROS Message
-        if success: SkillNode.send_command(command)
 
         # Return API Response
         return response
@@ -120,9 +116,6 @@ class GoTo_API_Handler(AbstractRequestHandler):
         # Return API Response
         success, response = custom_API_response(handler_input, command, f"I'm going to {location}")
 
-       # Publish ROS Message
-        if success: SkillNode.send_command(command)
-
         # Return API Response
         return response
 
@@ -141,9 +134,6 @@ class Stop_API_Handler(AbstractRequestHandler):
 
         # Return API Response
         success, response = custom_API_response(handler_input, command, 'Stopping...')
-
-       # Publish ROS Message
-        if success: SkillNode.send_command(command)
 
         # Return API Response
         return response
@@ -180,9 +170,6 @@ class PickObject_API_Handler(AbstractRequestHandler):
 
         # Return API Response
         success, response = custom_API_response(handler_input, command, f'I pick the {object} from {location}' if location != 'null' else f'I pick the {object}')
-
-       # Publish ROS Message
-        if success: SkillNode.send_command(command)
 
         # Return API Response
         return response
@@ -221,9 +208,6 @@ class MoveObject_API_Handler(AbstractRequestHandler):
         # Return API Response
         success, response = custom_API_response(handler_input, command, f'I move {object} from {from_location} to {to_location}')
 
-       # Publish ROS Message
-        if success: SkillNode.send_command(command)
-
         # Return API Response
         return response
 
@@ -250,9 +234,6 @@ class ExecuteTask_API_Handler(AbstractRequestHandler):
 
         # Return API Response
         success, response = custom_API_response(handler_input, command, f'Execute Task {task_name}')
-
-       # Publish ROS Message
-        if success: SkillNode.send_command(command)
 
         # Return API Response
         return response
