@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-import rospy, time
+import rospy
 from typing import Union
 
 # Import Messages
 from std_msgs.msg import String, Bool
-from alexa_conversation.msg import MultimessageCommand, PickCommand, MoveCommand, MoveObjectCommand, ExecuteTaskCommand
+from alexa_conversation.msg import MultimessageCommand
 from Utils.command_list import *
 
 class SkillServerNode():
@@ -20,7 +20,6 @@ class SkillServerNode():
 
         # Open ROS Skill Server
         rospy.init_node('skill_server', disable_signals=True)
-        time.sleep(1)
 
         # ROS Publishers
         self.command_pub       = rospy.Publisher('/alexa/command', MultimessageCommand, queue_size=1)
@@ -32,6 +31,9 @@ class SkillServerNode():
         # ROS Subscribers
         self.keep_alive_sub    = rospy.Subscriber('/alexa/keep_alive', Bool, self.keep_alive_callback)
 
+        # Initialization Sleep
+        rospy.sleep(1)
+
     def keep_alive_callback(self, msg:Bool):
 
         """ Keep Skill Alive Callback """
@@ -40,7 +42,7 @@ class SkillServerNode():
         self.KEEP_ALIVE = msg.data
         print('\nKeep Alive Callback:', msg.data, '\n')
 
-    def send_command(self, command:Union[Command, PickCommand, MoveCommand, MoveObjectCommand, ExecuteTaskCommand]):
+    def send_command(self, command:Union[Command, PickCommand, MoveCommand, MoveObjectCommand, ExecuteTaskCommand], success:bool=True, error_message:str=''):
 
         """ Send Command to ROS """
 
@@ -53,11 +55,15 @@ class SkillServerNode():
         msg.id   = command.getID()
         msg.info = command.getInfo()
 
+        # Command Success and Error Message
+        msg.success       = success
+        msg.error_message = error_message
+
         # Null, ROS, Default, Stop Commands
-        if command.getType() in [NULL, ROS, DEFAULT, STOP]: pass
+        if msg.type in [NULL, ROS, DEFAULT, STOP]: pass
 
         # Move Command
-        elif command.getType() == MOVE:
+        elif msg.type == MOVE:
 
             # Add Movement Information
             msg.move_command.direction = command.getDirection()
@@ -66,14 +72,14 @@ class SkillServerNode():
             msg.move_command.location  = command.getLocation()
 
         # Pick Command
-        elif command.getType() == PICK:
+        elif msg.type == PICK:
 
             # Add Pick Information
             msg.pick_command.object_name = command.getObjectName()
             msg.pick_command.location    = command.getLocation()
 
         # Move Object Command
-        elif command.getType() == MOVE_OBJECT:
+        elif msg.type == MOVE_OBJECT:
 
             # Add Object Information
             msg.move_object_command.object_name   = command.getObjectName()
@@ -81,11 +87,12 @@ class SkillServerNode():
             msg.move_object_command.to_location   = command.getToLocation()
 
         # Execute Task Command
-        elif command.getType() == EXECUTE_TASK:
+        elif msg.type == EXECUTE_TASK:
 
             # Add Task Information
             msg.execute_task_command.task_name = command.getTaskName()
 
+        # print(msg)
         self.command_pub.publish(msg)
 
     def alexa_tts(self, text:str):
