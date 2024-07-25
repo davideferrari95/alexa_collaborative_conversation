@@ -76,6 +76,9 @@ def custom_API_response(handler_input:HandlerInput, command:Command, success_str
 
     elif isinstance(feasibility, bool) and not feasibility:
 
+        # Publish ROS Message
+        SkillNode.send_command(command, False, fail_string)
+
         # Return Failed API Response
         return False, handler_input.response_builder.set_api_response({
                 'status': FAIL,
@@ -88,10 +91,13 @@ def custom_API_response(handler_input:HandlerInput, command:Command, success_str
         try: _, solution = feasibility
         except: _, solution = False, 'Unknown Error'
 
+        # Publish ROS Message
+        SkillNode.send_command(command, False, f'{solution}')
+
         # Return Failed API Response + Solution
         return False, handler_input.response_builder.set_api_response({
                 'status': FAIL,
-                'string': fail_string + ': ' + solution,
+                'string': solution,
             }).set_should_end_session(False).response
 
 def check_action_feasibility(command:Union[Command, PickCommand, MoveCommand, MoveObjectCommand, ExecuteTaskCommand]) -> Union[bool, Tuple[bool, str]]:
@@ -177,19 +183,19 @@ def check_action_feasibility(command:Union[Command, PickCommand, MoveCommand, Mo
 
             # Print Error Message
             print(f"Error: {response_data.get('message', 'Invalid input')}")
-            return False
+            return False, response_data['message']
 
         elif response.status_code == 401:
 
             # Print Error Message
             print(f"Error: {response_data.get('message', 'Command Type')}")
-            return False
+            return False, response_data['message']
 
         else:
 
             # Print Error Message
             print(f"Error: {response_data.get('message', 'Unknown Error')}")
-            return False
+            return False, response_data['message']
 
     # Request Failed
     except requests.exceptions.RequestException as e:
