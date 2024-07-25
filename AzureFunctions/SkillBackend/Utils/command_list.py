@@ -36,10 +36,10 @@ class Command():
         return f'Name: {self.name} | Type: {self.type} | ID: {self.ID} | Info: {self.info}'
 
     # Command Information Getters
-    def getName(self): return self.name
-    def getID(self):   return self.ID
-    def getType(self): return self.type
-    def getInfo(self): return self.info
+    def getName(self) -> str: return self.name
+    def getID(self)   -> str: return self.ID
+    def getType(self) -> str: return self.type
+    def getInfo(self) -> str: return self.info
 
 class MoveCommand(Command):
 
@@ -52,7 +52,7 @@ class MoveCommand(Command):
 
         # Save Move Information
         self.direction = direction
-        self.distance  = distance
+        self.distance  = float(distance)
         self.measure   = measure
         self.location  = location
 
@@ -64,15 +64,15 @@ class MoveCommand(Command):
 
     # Move Information Setters
     def setDirection(self, direction:str): self.direction = direction
-    def setDistance(self, distance:float): self.distance  = distance
+    def setDistance(self, distance:float): self.distance  = float(distance)
     def setMeasure(self, measure:str):     self.measure   = measure
     def setLocation(self, location:str):   self.location  = location
 
     # Move Information Getters
-    def getDirection(self): return self.direction
-    def getDistance(self):  return self.distance
-    def getMeasure(self):   return self.measure
-    def getLocation(self):  return self.location
+    def getDirection(self) -> str:   return self.direction
+    def getDistance(self)  -> float: return float(self.distance)
+    def getMeasure(self)   -> str:   return self.measure
+    def getLocation(self)  -> str:   return self.location
 
 class PickCommand(Command):
 
@@ -97,8 +97,8 @@ class PickCommand(Command):
     def setLocation(self, location:str):      self.location    = location
 
     # Pick Information Getters
-    def getObjectName(self): return self.object_name
-    def getLocation(self):   return self.location
+    def getObjectName(self) -> str: return self.object_name
+    def getLocation(self)   -> str: return self.location
 
 class MoveObjectCommand(Command):
 
@@ -125,9 +125,9 @@ class MoveObjectCommand(Command):
     def setToLocation(self, to_location:str):     self.to_location   = to_location
 
     # Move Object Information Getters
-    def getObjectName(self):   return self.object_name
-    def getFromLocation(self): return self.from_location
-    def getToLocation(self):   return self.to_location
+    def getObjectName(self)   -> str: return self.object_name
+    def getFromLocation(self) -> str: return self.from_location
+    def getToLocation(self)   -> str: return self.to_location
 
 class ExecuteTaskCommand(Command):
 
@@ -150,7 +150,7 @@ class ExecuteTaskCommand(Command):
     def setTaskName(self, task_name:str): self.task_name = task_name
 
     # Execute Task Information Getters
-    def getTaskName(self): return self.task_name
+    def getTaskName(self) -> str: return self.task_name
 
 class CommandList(List[Command]):
 
