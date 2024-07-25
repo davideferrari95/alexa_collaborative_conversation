@@ -15,3 +15,7 @@ alexa_conversation/MoveObjectCommand move_object_command
 
 # Execute Task Command
 alexa_conversation/ExecuteTaskCommand execute_task_command
+
+# Server Response
+bool success
+string error_message
