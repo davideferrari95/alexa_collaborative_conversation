@@ -43,6 +43,9 @@ class Command():
 
     def fill(self): pass
 
+    def clear(self): self.name, self.ID, self.type, self.info = '', 0, NULL, ''
+    def clear_properties(self): pass
+
     # Command Information Getters
     def getName(self) -> str: return self.name
     def getID(self)   -> str: return self.ID
@@ -77,6 +80,17 @@ class MoveCommand(Command):
         self.setDistance(move_command.distance)
         self.setMeasure(move_command.measure)
         self.setLocation(move_command.location)
+
+    def clear(self):
+
+        # Clear Move Information
+        super().clear()
+        self.direction, self.distance, self.measure, self.location = 'null', 0.0, 'null', 'null'
+
+    def clear_properties(self):
+
+        # Clear Move Information
+        self.direction, self.distance, self.measure, self.location = 'null', 0.0, 'null', 'null'
 
     # Move Information Setters
     def setDirection(self, direction:str): self.direction = direction
@@ -114,6 +128,17 @@ class PickCommand(Command):
         self.setObjectName(pick_command.object_name)
         self.setLocation(pick_command.location)
 
+    def clear(self):
+
+        # Clear Pick Information
+        super().clear()
+        self.object_name, self.location = 'null', 'null'
+
+    def clear_properties(self):
+
+        # Clear Pick Information
+        self.object_name, self.location = 'null', 'null'
+
     # Pick Information Setters
     def setObjectName(self, object_name:str): self.object_name = object_name
     def setLocation(self, location:str):      self.location    = location
@@ -148,6 +173,17 @@ class MoveObjectCommand(Command):
         self.setFromLocation(move_object_command.from_location)
         self.setToLocation(move_object_command.to_location)
 
+    def clear(self):
+
+        # Clear Move Object Information
+        super().clear()
+        self.object_name, self.from_location, self.to_location = 'null', 'null', 'null'
+
+    def clear_properties(self):
+
+        # Clear Move Object Information
+        self.object_name, self.from_location, self.to_location = 'null', 'null', 'null'
+
     # Move Object Information Setters
     def setObjectName(self, object_name:str):     self.object_name   = object_name
     def setFromLocation(self, from_location:str): self.from_location = from_location
@@ -179,6 +215,17 @@ class ExecuteTaskCommand(Command):
 
         # Fill Execute Task Information
         self.setTaskName(execute_task_command.task_name)
+
+    def clear(self):
+
+        # Clear Execute Task Information
+        super().clear()
+        self.task_name = 'null'
+
+    def clear_properties(self):
+
+        # Clear Execute Task Information
+        self.task_name = 'null'
 
     # Execute Task Information Setters
     def setTaskName(self, task_name:str): self.task_name = task_name

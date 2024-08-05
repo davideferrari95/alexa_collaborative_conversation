@@ -89,6 +89,9 @@ class MoveDirection_API_Handler(AbstractRequestHandler):
         # Return API Response
         success, response = custom_API_response(handler_input, command, f'Moving {direction} {distance} {measure}')
 
+        # Clear Command
+        command.clear_properties()
+
         # Return API Response
         return response
 
@@ -116,6 +119,9 @@ class GoTo_API_Handler(AbstractRequestHandler):
         # Return API Response
         success, response = custom_API_response(handler_input, command, f"I'm going to {location}")
 
+        # Clear Command
+        command.clear_properties()
+
         # Return API Response
         return response
 
@@ -134,6 +140,9 @@ class Stop_API_Handler(AbstractRequestHandler):
 
         # Return API Response
         success, response = custom_API_response(handler_input, command, 'Stopping...')
+
+        # Clear Command
+        command.clear_properties()
 
         # Return API Response
         return response
@@ -170,6 +179,9 @@ class PickObject_API_Handler(AbstractRequestHandler):
 
         # Return API Response
         success, response = custom_API_response(handler_input, command, f'I pick the {object} from {location}' if location != 'null' else f'I pick the {object}')
+
+        # Clear Command
+        command.clear_properties()
 
         # Return API Response
         return response
@@ -208,6 +220,9 @@ class MoveObject_API_Handler(AbstractRequestHandler):
         # Return API Response
         success, response = custom_API_response(handler_input, command, f'I move {object} from {from_location} to {to_location}')
 
+        # Clear Command
+        command.clear_properties()
+
         # Return API Response
         return response
 
@@ -234,6 +249,9 @@ class ExecuteTask_API_Handler(AbstractRequestHandler):
 
         # Return API Response
         success, response = custom_API_response(handler_input, command, f'Execute Task {task_name}')
+
+        # Clear Command
+        command.clear_properties()
 
         # Return API Response
         return response
