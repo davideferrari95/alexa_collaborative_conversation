@@ -19,28 +19,28 @@ from Handlers.default_handlers import *
 from Handlers.conversation_handlers import *
 
 # Import ROS Utilities
-from Utils.ros import SkillNode
+# from Utils.ros import SkillNode
 
 # Keep Alive Function
-def keep_alive():
+# def keep_alive():
 
-    """ Keep Skill Alive Function """
+#     """ Keep Skill Alive Function """
 
-    while not rospy.is_shutdown():
+#     while not rospy.is_shutdown():
 
-        # Continue Loop if Keep Alive is False or Another Dialog is Running
-        if not SkillNode.KEEP_ALIVE or SkillNode.another_dialog: continue
+#         # Continue Loop if Keep Alive is False or Another Dialog is Running
+#         if not SkillNode.KEEP_ALIVE or SkillNode.another_dialog: continue
 
-        # Publish Alive Command
-        SkillNode.alexa_keep_alive()
-        print('Keep Alive Call')
+#         # Publish Alive Command
+#         SkillNode.alexa_keep_alive()
+#         print('Keep Alive Call')
 
-        # Wait 12 Seconds
-        rospy.sleep(12)
+#         # Wait 12 Seconds
+#         rospy.sleep(12)
 
-# Keep Alive Thread
-keep_alive_thread = Thread(target=keep_alive)
-keep_alive_thread.start()
+# # Keep Alive Thread
+# keep_alive_thread = Thread(target=keep_alive)
+# keep_alive_thread.start()
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
 
